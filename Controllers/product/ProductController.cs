@@ -24,9 +24,19 @@ namespace FOLYFOOD.Controllers.product
         }
         // GET: api/<ValuesController>
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Get(int page = 1, int pageSize = 10, String? search = "", Double? priceFrom = null, Double? priceTo = null)
         {
-            IQueryable<Product> data = await productService.getProducts();
+            search = search ?? "";
+            priceFrom = priceFrom == 0 ? Double.MinValue : priceFrom;
+            priceTo = priceTo == 0 ? double.MaxValue : priceTo;
+            if(priceFrom > priceTo)
+            {
+                double permutation = priceTo.Value;
+                priceTo = priceFrom;
+                priceFrom = permutation;
+            }
+
+            IQueryable<Product> data = await productService.getProducts(search, priceFrom, priceTo);
             var res = PaginationHelper.GetPagedData<Product>(data, page, pageSize);
             RetunObject<PagedResult<Product>> dataProduct = new RetunObject<PagedResult<Product>>()
             {

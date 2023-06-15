@@ -25,6 +25,7 @@ namespace FOLYFOOD.Entitys
         public DbSet<Booking> Bookings { get; set; }
 
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentOrder> PaymentOrders { get; set; }
 
         public DbSet<Contact> Contacts { get; set; }
 
@@ -45,6 +46,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Account>()
                 .Property(a => a.UpdateAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Account>()
+               .Property(d => d.UpdateAt)
+               .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Decentralization>()
                 .Property(d => d.CreatedAt)
@@ -52,6 +56,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Decentralization>()
                 .Property(d => d.UpdateAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Decentralization>()
+               .Property(d => d.UpdateAt)
+               .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<User>()
                .Property(d => d.CreatedAt)
@@ -59,6 +66,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<User>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<User>()
+               .Property(d => d.UpdatedAt)
+               .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Staff>()
                .Property(d => d.CreatedAt)
@@ -66,6 +76,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Staff>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Staff>()
+               .Property(d => d.UpdatedAt)
+               .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ProductType>()
                .Property(d => d.CreatedAt)
@@ -73,6 +86,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<ProductType>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<ProductType>()
+               .Property(d => d.UpdatedAt)
+               .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Product>()
               .Property(d => d.CreatedAt)
@@ -80,6 +96,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Product>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Product>()
+               .Property(d => d.UpdatedAt)
+               .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ProductImage>()
              .Property(d => d.CreatedAt)
@@ -87,6 +106,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<ProductImage>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<ProductImage>()
+               .Property(d => d.UpdatedAt)
+               .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ProductReview>()
              .Property(d => d.CreatedAt)
@@ -94,6 +116,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<ProductReview>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<ProductReview>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ReservationDetailsService>()
             .Property(d => d.CreatedAt)
@@ -101,6 +126,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<ReservationDetailsService>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<ReservationDetailsService>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Booking>()
             .Property(d => d.CreatedAt)
@@ -108,6 +136,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Booking>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Booking>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Payment>()
             .Property(d => d.CreatedAt)
@@ -115,6 +146,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Payment>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Payment>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Contact>()
             .Property(d => d.CreatedAt)
@@ -122,6 +156,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Contact>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Contact>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Info>()
             .Property(d => d.CreatedAt)
@@ -129,6 +166,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Info>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Info>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Slides>()
             .Property(d => d.CreatedAt)
@@ -136,6 +176,9 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<Slides>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<Slides>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ImagePage>()
             .Property(d => d.CreatedAt)
@@ -143,7 +186,21 @@ namespace FOLYFOOD.Entitys
             modelBuilder.Entity<ImagePage>()
                 .Property(d => d.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
-        }
+            modelBuilder.Entity<ImagePage>()
+                .Property(d => d.UpdatedAt)
+                .ValueGeneratedOnUpdate();
+
+            modelBuilder.Entity<PaymentOrder>()
+               .Property(d => d.CreatedAt)
+               .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<PaymentOrder>()
+                .Property(d => d.UpdatedAt)
+                .HasDefaultValue(DateTime.UtcNow);
+            modelBuilder.Entity<PaymentOrder>()
+               .Property(d => d.UpdatedAt)
+               .ValueGeneratedOnUpdate();
+
+        }   
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

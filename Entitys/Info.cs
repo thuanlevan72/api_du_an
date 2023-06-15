@@ -1,4 +1,6 @@
-﻿namespace FOLYFOOD.Entitys
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FOLYFOOD.Entitys
 {
     public class Info
     {
@@ -10,6 +12,8 @@
         public string Title { get; set; }
         public bool IsShow { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
     }
 }

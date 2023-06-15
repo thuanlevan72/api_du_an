@@ -70,21 +70,29 @@ namespace FOLYFOOD.Services
                 return null;
             }
             int imageSize = 2 * 1024 * 1024;
-            if (!ImageChecker.IsImage(data.Avatar, imageSize))
+           
+            string imageUrl = "";
+            string hashedPassword = "";
+            if (data.Avatar != null)
             {
-                return null;
-            };
-            var avatarFile = data.Avatar;
-            string imageUrl = await uplloadFile.UploadFile(avatarFile);
-            // Mã hóa mật khẩu
-            string hashedPassword = BCryptNet.HashPassword(data.Password);
+                if (!ImageChecker.IsImage(data.Avatar, imageSize))
+                {
+                    return null;
+                };
+                var avatarFile = data.Avatar;
+
+                imageUrl = await uplloadFile.UploadFile(avatarFile);
+
+                // Mã hóa mật khẩu
+                hashedPassword = BCryptNet.HashPassword(data.Password);
+            }
 
             ////// Kiểm tra mật khẩu
             ////bool isPasswordCorrect = BCryptNet.Verify(password, hashedPassword);
             var res = new Account()
             {
                 Password = hashedPassword,
-                Avartar = imageUrl,
+                Avartar = imageUrl == "" ? "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=": imageUrl,
                 Status = 1,
                 DecentralizationId = 3,
                 UserName = data.UserName,

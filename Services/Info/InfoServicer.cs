@@ -106,9 +106,14 @@ namespace FOLYFOOD.Services.Info
             Entitys.Info info =  await DBContext.Infos.SingleOrDefaultAsync(x => x.InfoId == infoId);
             try
             {
-                if(info == null)
+                if (info == null)
                 {
                     throw new Exception("thông tin info không tồn tại");
+                }
+
+               if(info.IsShow)
+                {
+                    throw new Exception("chọn thằng khác đi cái này mày chọn rồi");
                 }
 
             }
@@ -124,7 +129,7 @@ namespace FOLYFOOD.Services.Info
             }
             await DBContext.Database.ExecuteSqlAsync($@"UPDATE Infos  SET IsShow = 0");
             info = await DBContext.Infos.SingleOrDefaultAsync(x => x.InfoId == infoId);
-            info.IsShow = true;
+            info.IsShow = !info.IsShow;
             DBContext.Update(info);
             DBContext.SaveChanges();
             return new RetunObject<Entitys.Info>()

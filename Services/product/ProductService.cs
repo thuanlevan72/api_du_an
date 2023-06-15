@@ -128,9 +128,22 @@ namespace FOLYFOOD.Services.product
             };
         }
 
-        public async Task<IQueryable<Product>> getProducts()
+        public async Task<IQueryable<Product>> getProducts(String? search = "", Double? priceFrom = 0, Double? priceTo = 0)
         {
-            return DBContext.Products.Include(x => x.ProductType).Where(x => x.Status == 1).AsQueryable();
+            var data = DBContext.Products.Include(x => x.ProductType).Where(x => x.Status == 1).AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+            {
+                data = data.Where(x => x.NameProduct.ToLower().Contains(search));
+            }
+            if(priceFrom != null && priceTo != null)
+            {
+                data = data.Where(x => x.Price >= priceFrom && x.Price <= priceTo);
+            }
+            foreach (var product in data)
+            {
+                product.ProductType.Products = null;
+            }
+            return data;
         }
 
         public async Task<RetunObject<Product>> updateProduct(int productId, ProductDto product)

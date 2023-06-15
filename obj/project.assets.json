@@ -4270,11 +4270,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj",
+      "projectUniqueName": "D:\\api_du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj",
       "projectName": "FOLYFOOD",
-      "projectPath": "D:\\du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj",
+      "projectPath": "D:\\api_du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj",
       "packagesPath": "C:\\Users\\thuan\\.nuget\\packages\\",
-      "outputPath": "D:\\du_an\\api\\FOLYFOOD\\obj\\",
+      "outputPath": "D:\\api_du_an\\api\\FOLYFOOD\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\thuan\\AppData\\Roaming\\NuGet\\NuGet.Config",

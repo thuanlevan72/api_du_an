@@ -11,7 +11,7 @@ namespace FOLYFOOD.IService.IProduct
 
         public Task<RetunObject<Product>> updateProduct(int productId,  ProductDto product);
 
-        public Task<IQueryable<Product>> getProducts();
+        public Task<IQueryable<Product>> getProducts(String? search = "", Double? priceFrom = 0, Double? priceTo = 0);
         public Task<RetunObject<Product>> updateStatus(int id);
 
         public Task<RetunObject<Product>> deleteProduct(int productId);
