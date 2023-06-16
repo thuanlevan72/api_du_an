@@ -3,6 +3,7 @@ using FOLYFOOD.Dto.ProductDto.imageProductDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Services.product;
 using FOLYFOOD.Services.product.ImageProduct;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.Collections;
@@ -36,7 +37,7 @@ namespace FOLYFOOD.Controllers.product.imageProduct
         }
 
         // POST api/<ImageProductController>
-        [HttpPost("{id}")]
+        [HttpPost("{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Post([FromForm] List<IFormFile> value, int id)
         {
             RetunObject<IQueryable<ProductImage>> res = await imageProductService.CreateListImage(value,id);

@@ -6,6 +6,7 @@ using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.IService.IProduct.IImageProduct;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 
 namespace FOLYFOOD.Services.product.ImageProduct
 {
@@ -26,10 +27,17 @@ namespace FOLYFOOD.Services.product.ImageProduct
                 {
                     throw new Exception("Sản phẩm không tồn tại");
                 }
+                if(DBContext.ProductImages.Where(x=>x.ProductId == idProduct).Count() > 0)
+                {
+                    throw new Exception("đã tồn tại sản phẩm trước đó");
+                }
                 if(images.Count == 0)
                 {
                     throw new Exception("không tồn tại ảnh để thêm");
-
+                }
+                if(images.Count > 3)
+                {
+                    throw new Exception("bạn đã gửi quá nhiều ảnh không được quá 3 ảnh ");
                 }
                 foreach(var image in images)
                 {
@@ -38,6 +46,7 @@ namespace FOLYFOOD.Services.product.ImageProduct
                         throw new Exception("có lỗi trong quá trình sử lý ảnh");
                     }
                 }
+
             }
             catch (Exception ex)
             {

@@ -35,6 +35,13 @@ namespace FOLYFOOD.Services.product
                 {
                     throw new Exception("loại sản phẩm thêm vào không tồn tại");
                 }
+                if(product.Price < 0) {
+                    throw new Exception("giá không được là số âm");
+
+                }
+                if(product.Discount < 0 || product.Discount > 100) {
+                    throw new Exception("giảm giá là % không được âm hoặc lớn hơn 100");
+                }
 
             }
             catch (Exception ex)
@@ -100,6 +107,38 @@ namespace FOLYFOOD.Services.product
             };
         }
 
+        public async Task<RetunObject<Product>> increaseViews(int productId)
+        {
+            Product checkProduct = null;
+            try
+            {
+                checkProduct = await DBContext.Products.Include(x => x.ProductType).SingleOrDefaultAsync(x => x.ProductId == productId);
+                if (checkProduct == null)
+                {
+                    throw new Exception("sản phẩm cần tăng lượt xem không tồn tại");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new RetunObject<Product>()
+                {
+                    data = null,
+                    mess = ex.Message,
+                    statusCode = 401
+                };
+            }
+            checkProduct.number_of_views += 1;
+            DBContext.Products.Update(checkProduct);
+            DBContext.SaveChanges();
+            return new RetunObject<Product>()
+            {
+                data = checkProduct,
+                mess = "lấy sản phẩm thành công",
+                statusCode = 200
+            };
+
+        }
+
         public async Task<RetunObject<Product>> getDetailproduct(int productId)
         {
             Product checkProduct = null;
@@ -143,7 +182,8 @@ namespace FOLYFOOD.Services.product
             {
                 product.ProductType.Products = null;
             }
-            return data;
+
+            return data.OrderByDescending(x=>x.number_of_views).ThenByDescending(x=>x.ProductId);
         }
 
         public async Task<RetunObject<Product>> updateProduct(int productId, ProductDto product)
@@ -162,6 +202,15 @@ namespace FOLYFOOD.Services.product
                     {
                         throw new Exception("có lỗi trong quá trình sử lý ảnh");
                     }
+                }
+                if (product.Price < 0)
+                {
+                    throw new Exception("giá không được là số âm");
+
+                }
+                if (product.Discount < 0 || product.Discount > 100)
+                {
+                    throw new Exception("giảm giá là % không được âm hoặc lớn hơn 100");
                 }
 
                 checkTypeProduct = await DBContext.ProductTypes.SingleOrDefaultAsync(x => x.ProductTypeId == product.ProductTypeId);
@@ -197,6 +246,7 @@ namespace FOLYFOOD.Services.product
             checkProduct.Discount = product.Discount.Value;
             checkProduct.Status = product.Status.Value;
             checkProduct.Title = product.Title;
+            checkProduct.UpdatedAt = DateTime.Now;
           DBContext.Products.Update(checkProduct);
           await DBContext.SaveChangesAsync();
             return new RetunObject<Product>()
@@ -228,7 +278,7 @@ namespace FOLYFOOD.Services.product
                 };
             }
             checkProduct.Status = checkProduct.Status == 1 ? 0 : 1;
-
+            checkProduct.UpdatedAt = DateTime.Now;
             DBContext.Products.Update(checkProduct);
             DBContext.SaveChanges();
             return new RetunObject<Product>()

@@ -8,7 +8,13 @@ namespace FOLYFOOD.Entitys
         public int OrderId { get; set; }
         public int PaymentId { get; set; }
         public int UserId { get; set; }
-        public int Status { get; set; }
+        public int OrderStatusId { get; set; }
+        public double originalPrice { get; set; }
+        public double actualPrice { get; set; }
+        public string FullName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; } 
+        public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         // Mối quan hệ: Một Order có nhiều OrderDetail

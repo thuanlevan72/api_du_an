@@ -59,6 +59,17 @@ namespace FOLYFOOD.Controllers.product
             return Ok(res);
         }
 
+        [HttpGet("increaseviews/{id}")]
+        public async Task<IActionResult> IncreaseViews(int id)
+        {
+            RetunObject<Product> res = await productService.increaseViews(id);
+            if (res.errorOccurred)
+            {
+                return NotFound(res);
+            }
+            return Ok(res);
+        }
+
         // POST api/<ValuesController>
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] ProductDto value)

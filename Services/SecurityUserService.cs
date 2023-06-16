@@ -2,6 +2,7 @@
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
 using FOLYFOOD.Hellers.imageChecks;
+using FOLYFOOD.Hellers.validate;
 using Microsoft.EntityFrameworkCore;
 using BCryptNet = BCrypt.Net.BCrypt;
 
@@ -66,6 +67,10 @@ namespace FOLYFOOD.Services
                 return null;
             }
             if (DBContext.Accounts.Any(x => x.UserName == data.UserName || x.Email == data.Email))
+            {
+                return null;
+            }
+            if(!ValidateValue.IsValidEmail(data.Email))
             {
                 return null;
             }

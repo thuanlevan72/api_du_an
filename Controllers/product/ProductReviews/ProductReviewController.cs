@@ -4,6 +4,7 @@ using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.Services.product;
 using FOLYFOOD.Services.product.ImageProduct;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -22,7 +23,7 @@ namespace FOLYFOOD.Controllers.product.ProductReviews
             productReviewService = new ProductReviewService();
         }
         // GET: api/<ProductReviewController>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
         {
             IQueryable<ProductReview> data = await productReviewService.getProductReview();
@@ -36,9 +37,9 @@ namespace FOLYFOOD.Controllers.product.ProductReviews
             return Ok(dataProduct);
         }
         [HttpGet("getforproduct")]
-        public async Task<IActionResult> getReviewForProduct(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> getReviewForProduct(int ProductId,int page = 1, int pageSize = 10)
         {
-            IQueryable<ProductReview> data = await productReviewService.getProductReview();
+            IQueryable<ProductReview> data = await productReviewService.getReviewForProduct(ProductId);
             var res = PaginationHelper.GetPagedData<ProductReview>(data, page, pageSize);
             RetunObject<PagedResult<ProductReview>> dataProduct = new RetunObject<PagedResult<ProductReview>>()
             {

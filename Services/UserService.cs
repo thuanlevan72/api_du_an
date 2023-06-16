@@ -3,6 +3,7 @@ using FOLYFOOD.Dto.UserDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
 using FOLYFOOD.Hellers.imageChecks;
+using FOLYFOOD.Hellers.validate;
 using FOLYFOOD.IService;
 using Microsoft.EntityFrameworkCore;
 using BCryptNet = BCrypt.Net.BCrypt;
@@ -21,7 +22,7 @@ namespace FOLYFOOD.Services
         public async Task<IQueryable<Account>> getListUser()
         {
             // lấy dữ liệu user nha 
-            var listUser = DbContext.Accounts.AsNoTracking().Include(x => x.User).Where(x => x.DecentralizationId == 3);
+            var listUser = DbContext.Accounts.AsNoTracking().Include(x => x.User).Where(x => x.DecentralizationId == 3).OrderByDescending(x=>x.AccountId);
             return listUser;
         }
 
@@ -132,7 +133,15 @@ namespace FOLYFOOD.Services
                 {
                     throw new Exception("các thông tin nhập vào chưa đầy đủ");
                 }
-               
+                if (!ValidateValue.IsValidEmail(account.Email))
+                {
+                    throw new Exception("email nhập vào không hợp lệ");
+                }
+                if (!ValidateValue.IsValidPhoneNumber(account.Phone))
+                {
+                    throw new Exception("phone nhập vào không hợp lệ");
+                }
+
             }
             catch (Exception ex)
             {
