@@ -7,6 +7,7 @@ using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,7 +25,7 @@ namespace FOLYFOOD.Controllers.user
         }
         
 
-        [HttpGet, Authorize(Roles = "staff, admin")]
+        [HttpGet]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
         {
             var accounts = await userService.getListUser();
@@ -78,8 +79,14 @@ namespace FOLYFOOD.Controllers.user
 
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            RetunObject<Account> data = await userService.DeleteUser(id);
+            if (data.errorOccurred)
+            {
+                return NotFound(data);
+            }
+            return Ok(data);
         }
     }
 }

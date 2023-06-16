@@ -11,5 +11,7 @@ namespace FOLYFOOD.IService
         public Task<Account> getOneUser(int id);
 
         public Task<RetunObject<Account>> updateOneAccount(UserUpdateClient account, int id);
+
+        public Task<RetunObject<Account>> DeleteUser(int id);
     }
 }

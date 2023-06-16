@@ -19,6 +19,43 @@ namespace FOLYFOOD.Services
             DbContext = new Context();
         }
 
+        public async Task<RetunObject<Account>> DeleteUser(int id)
+        {
+            Account userUpdate = await DbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == id);
+            try
+            {
+                if (userUpdate == null)
+                {
+                    throw new Exception("thông tin người dùng không tồn tại");
+                }
+                int imageSize = 2 * 1024 * 1024; // tương ứng với 2mb
+            }
+            catch (Exception ex)
+            {
+                return new RetunObject<Account>
+                {
+                    data =null,
+                    mess = ex.Message,
+                    statusCode = 400,
+                };
+
+            }
+            var userInfo = DbContext.Users.FirstOrDefault(x => x.AccountId == id);
+            DbContext.Users.Remove(userInfo);
+            await DbContext.SaveChangesAsync();
+            if (!userUpdate.Avartar.Contains("https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=")){
+                await uplloadFile.DeleteFile(userUpdate.Avartar);
+            }
+            DbContext.Accounts.Remove(userUpdate);
+            await DbContext.SaveChangesAsync();
+            return new RetunObject<Account>
+            {
+                data = userUpdate,
+                mess = "đã xóa thành công user",
+                statusCode = 200,
+            };
+        }
+
         public async Task<IQueryable<Account>> getListUser()
         {
             // lấy dữ liệu user nha 
