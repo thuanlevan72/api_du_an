@@ -12,6 +12,8 @@ using CloudinaryDotNet;
 using FOLYFOOD.Hellers;
 using FOLYFOOD.Dto;
 using BCryptNet = BCrypt.Net.BCrypt;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace POLYFOOD.Controllers
 {
@@ -33,7 +35,7 @@ namespace POLYFOOD.Controllers
             userService = new UserService();
         }
 
-        [HttpPost("upload")]
+        [HttpPost("upload"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Upload(IFormFile file)
         {
 
@@ -120,7 +122,7 @@ namespace POLYFOOD.Controllers
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddHours(4),
+                expires: DateTime.Now.AddHours(10),
                 signingCredentials: cred                                                                                
             );
 

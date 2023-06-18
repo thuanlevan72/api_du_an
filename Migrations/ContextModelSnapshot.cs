@@ -39,7 +39,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(1728))
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(8675))
                         .HasColumnName("created_at");
 
                     b.Property<int>("DecentralizationId")
@@ -63,7 +63,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdateAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(1930))
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(8848))
                         .HasColumnName("update_at");
 
                     b.Property<string>("UserName")
@@ -89,7 +89,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(4581));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1000));
 
                     b.Property<string>("Note")
                         .IsRequired()
@@ -107,7 +107,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(4679));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1095));
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -137,7 +137,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(5446));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1477));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -154,7 +154,11 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(5571));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1566));
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("answered")
                         .HasColumnType("bit");
@@ -181,13 +185,13 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(2071))
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9012))
                         .HasColumnName("created_at");
 
                     b.Property<DateTime>("UpdateAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(2164))
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9101))
                         .HasColumnName("update_at");
 
                     b.HasKey("DecentralizationId");
@@ -206,7 +210,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(6176));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(2146));
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -222,7 +226,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(6301));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(2255));
 
                     b.HasKey("ImagePageId");
 
@@ -248,7 +252,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(5693));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1705));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -268,7 +272,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(5819));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1793));
 
                     b.HasKey("InfoId");
 
@@ -409,7 +413,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(5188));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1242));
 
                     b.Property<double>("OriginalPrice")
                         .HasColumnType("float");
@@ -424,7 +428,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(5323));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1334));
 
                     b.HasKey("PaymentId");
 
@@ -445,7 +449,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(6413));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(2371));
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -461,7 +465,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(6536));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(2480));
 
                     b.HasKey("PaymentId");
 
@@ -483,7 +487,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(3473));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9974));
 
                     b.Property<int>("Discount")
                         .HasColumnType("int");
@@ -511,7 +515,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(3610));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(96));
 
                     b.Property<string>("fullDescription")
                         .IsRequired()
@@ -542,7 +546,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(3738));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(220));
 
                     b.Property<string>("ImageProduct")
                         .IsRequired()
@@ -561,7 +565,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(3868));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(336));
 
                     b.HasKey("ProductImageId");
 
@@ -589,7 +593,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(4031));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(463));
 
                     b.Property<int>("PointEvaluation")
                         .HasColumnType("int");
@@ -603,7 +607,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(4138));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(594));
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -628,7 +632,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(3223));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9744));
 
                     b.Property<string>("ImageTypeProduct")
                         .IsRequired()
@@ -641,7 +645,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(3352));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9830));
 
                     b.HasKey("ProductTypeId");
 
@@ -662,7 +666,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(4307));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(721));
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -673,7 +677,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(4411));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(842));
 
                     b.HasKey("ReservationDetailsServiceId");
 
@@ -842,12 +846,12 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(5935));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(1930));
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(6057));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 65, DateTimeKind.Utc).AddTicks(2036));
 
                     b.HasKey("SlidesId");
 
@@ -872,7 +876,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(2965));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9504));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -885,7 +889,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(3101));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9597));
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -917,7 +921,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(2350));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9247));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -930,7 +934,7 @@ namespace FOLYFOOD.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 17, 11, 2, 51, 197, DateTimeKind.Utc).AddTicks(2461));
+                        .HasDefaultValue(new DateTime(2023, 6, 18, 15, 9, 8, 64, DateTimeKind.Utc).AddTicks(9350));
 
                     b.Property<string>("UserName")
                         .IsRequired()

@@ -72,9 +72,9 @@ namespace FOLYFOOD.Services.Info
             return infos.AsQueryable();
         }
 
-        public async Task<RetunObject<Entitys.Info>> getInfo(int infoId)
+        public async Task<RetunObject<Entitys.Info>> getInfo()
         {
-            Entitys.Info info = await DBContext.Infos.SingleOrDefaultAsync(x => x.InfoId == infoId);
+            Entitys.Info info = await DBContext.Infos.SingleOrDefaultAsync(x => x.IsShow);
             try
             {
                 if (info == null)

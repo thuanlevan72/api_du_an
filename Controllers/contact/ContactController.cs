@@ -3,6 +3,7 @@ using FOLYFOOD.Dto.NewFolder;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.Services.Contact;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,7 +20,7 @@ namespace FOLYFOOD.Controllers.contact
             contactService = new ContactService();
         }
         // GET: api/<ContactController>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "staff, admin")]
         public IActionResult Get(int page = 1, int pageSize = 10)
         {
             var data = contactService.getDataContact();
@@ -34,7 +35,7 @@ namespace FOLYFOOD.Controllers.contact
         }
 
         // GET api/<ContactController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize(Roles = "staff, admin")]
         public IActionResult Get(int id)
         {
             return Ok(contactService.GetOneContact(id));
@@ -51,7 +52,7 @@ namespace FOLYFOOD.Controllers.contact
             }
             return Ok(res);
         }
-        [HttpPost("reply-contact")]
+        [HttpPost("reply-contact"), Authorize(Roles = "staff, admin")]
         public IActionResult replyContact(string mess, string email)
         {
             RetunObject<Contact> res = contactService.replyToContact(email,mess);
@@ -63,7 +64,7 @@ namespace FOLYFOOD.Controllers.contact
         }
 
         // PUT api/<ContactController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "staff, admin")]
         public void Put(int id, [FromBody] string value)
         {
         }

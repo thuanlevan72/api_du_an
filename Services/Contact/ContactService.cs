@@ -3,6 +3,7 @@ using FOLYFOOD.Dto.NewFolder;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Mail;
 using FOLYFOOD.Hellers.Pagination;
+using FOLYFOOD.Hellers.validate;
 using FOLYFOOD.IService.IContact;
 
 namespace FOLYFOOD.Services.Contact
@@ -20,13 +21,21 @@ namespace FOLYFOOD.Services.Contact
         {
             try
             {
-                if (string.IsNullOrEmpty(data.Address) || string.IsNullOrEmpty(data.Phone) || string.IsNullOrEmpty(data.Subject) || string.IsNullOrEmpty(data.Email))
+                if (string.IsNullOrEmpty(data.Address) || string.IsNullOrEmpty(data.UserName) || string.IsNullOrEmpty(data.Phone) || string.IsNullOrEmpty(data.Subject) || string.IsNullOrEmpty(data.Email))
                 {
                     throw new Exception("dữ liệu truyền lên không hợp lệ");
                 }
                 if(DBContext.Contacts.Any(x=>x.Email == data.Email))
                 {
                     throw new Exception("bạn đã gửi một lần trước đó rồi mong bạn thông cảm cho chúng tôi nha");
+                }
+                if(!ValidateValue.IsValidEmail(data.Email))
+                {
+                    throw new Exception("email bạn nhập lên không hợp lệ");
+                }
+                if (!ValidateValue.IsValidPhoneNumber(data.Phone))
+                {
+                    throw new Exception("email bạn nhập lên không hợp lệ");
                 }
             }
             catch (Exception ex)

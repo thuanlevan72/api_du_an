@@ -170,7 +170,7 @@ namespace FOLYFOOD.Services.product
         }
         public async Task<IQueryable<Product>> getProducts(String? search = "", Double? priceFrom = 0, Double? priceTo = 0)
         {
-            var data = DBContext.Products.Include(x => x.ProductType).Where(x => x.Status == 1).AsQueryable();
+            var data = DBContext.Products.Include(x => x.ProductType).AsQueryable();
             if (!string.IsNullOrEmpty(search))
             {
                 data = data.Where(x => x.NameProduct.ToLower().Contains(search));

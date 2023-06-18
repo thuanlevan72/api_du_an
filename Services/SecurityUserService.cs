@@ -125,7 +125,7 @@ namespace FOLYFOOD.Services
         }
         public  Account checkLogin(string email,string password) 
         {
-            Account account1 = DBContext.Accounts.Include(x=>x.Decentralization).FirstOrDefault(x=>x.Email == email);
+            Account account1 = DBContext.Accounts.Include(x=>x.Decentralization).Include(x=>x.User).FirstOrDefault(x=>x.Email == email);
             if(account1 == null)
             {
                 return null;

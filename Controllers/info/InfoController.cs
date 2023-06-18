@@ -4,6 +4,7 @@ using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.Services.Info;
 using FOLYFOOD.Services.product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -22,7 +23,7 @@ namespace FOLYFOOD.Controllers.info
             infoServicer = new InfoServicer();
         }
         // GET: api/<InfoController>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
         {
             IQueryable<Info> data = await infoServicer.getAllInfo();
@@ -37,10 +38,10 @@ namespace FOLYFOOD.Controllers.info
         }
 
         // GET api/<InfoController>/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("info-frontend")]
+        public async Task<IActionResult> Get()
         {
-            RetunObject<Info> res = await infoServicer.getInfo(id);
+            RetunObject<Info> res = await infoServicer.getInfo();
             if (res.errorOccurred)
             {
                 return NotFound(res);
@@ -49,7 +50,7 @@ namespace FOLYFOOD.Controllers.info
         }
 
         // POST api/<InfoController>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Post([FromBody] InfoRequets value)
         {
             RetunObject<Info> res = await infoServicer.addInfo(value);
@@ -66,7 +67,7 @@ namespace FOLYFOOD.Controllers.info
         {
         }
         // PUT api/<InfoController>/5
-        [HttpPut("showinfo/{id}")]
+        [HttpPut("showinfo/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> showInfo(int id)
         {
             RetunObject<Info> res = await infoServicer.showInfo(id);

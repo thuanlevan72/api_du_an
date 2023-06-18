@@ -5,6 +5,7 @@ using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.IService.IContact;
 using FOLYFOOD.Services.Contact;
 using FOLYFOOD.Services.product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -23,7 +24,7 @@ namespace FOLYFOOD.Controllers.product
             productService = new ProductService();
         }
         // GET: api/<ValuesController>
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 10, String? search = "", Double? priceFrom = null, Double? priceTo = null)
         {
             search = search ?? "";
@@ -80,7 +81,7 @@ namespace FOLYFOOD.Controllers.product
         }
 
         // POST api/<ValuesController>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Post([FromForm] ProductDto value)
         {
             RetunObject<Product> res = await productService.CreateProduct(value);
@@ -93,7 +94,7 @@ namespace FOLYFOOD.Controllers.product
         }
 
         // PUT api/<ValuesController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Put(int id, [FromForm] ProductDto value)
         {
 
@@ -104,7 +105,7 @@ namespace FOLYFOOD.Controllers.product
             }
             return Ok(res);
         }
-        [HttpPut("update_status/{id}")]
+        [HttpPut("update_status/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> PutStatus(int id)
         {
             RetunObject<Product> res = await productService.updateStatus(id);
@@ -115,9 +116,10 @@ namespace FOLYFOOD.Controllers.product
             return Ok(res);
         }
         // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "staff, admin")]
         public void Delete(int id)
         {
+
         }
     }
 }

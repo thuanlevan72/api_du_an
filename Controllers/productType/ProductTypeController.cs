@@ -4,6 +4,7 @@ using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.Services.Contact;
 using FOLYFOOD.Services.typeProduct;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -47,7 +48,7 @@ namespace FOLYFOOD.Controllers.productType
         }
 
         // POST api/<ProductTypeController>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Post([FromForm] ProductTypeDto data)
         {
             var res =  await TypeProductService.createProductType(data);
@@ -59,7 +60,7 @@ namespace FOLYFOOD.Controllers.productType
         }
 
         // PUT api/<ProductTypeController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Put(int id, [FromForm] ProductTypeDto data)
         {
             var res = await TypeProductService.updateProductType(id,data);
@@ -71,7 +72,7 @@ namespace FOLYFOOD.Controllers.productType
         }
 
         // DELETE api/<ProductTypeController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var res = await TypeProductService.DeleteproductType(id);

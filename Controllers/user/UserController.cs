@@ -25,7 +25,7 @@ namespace FOLYFOOD.Controllers.user
         }
         
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
         {
             var accounts = await userService.getListUser();
@@ -38,7 +38,7 @@ namespace FOLYFOOD.Controllers.user
             };
             return Ok(test);
         }
-        [HttpGet("/sendMail")]
+        [HttpGet("/sendMail"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> sendMail(string mailTo, string Subject)
         {
           string str = SendMail.send(mailTo, Template1.temlapteHtmlMail(), Subject);
@@ -58,7 +58,7 @@ namespace FOLYFOOD.Controllers.user
         }
 
         // POST api/<UserController>
-        [HttpPost]
+        [HttpPost, Authorize(Roles = "staff, admin")]
         public void Post([FromBody]string value)
         {
         }
@@ -78,7 +78,7 @@ namespace FOLYFOOD.Controllers.user
         }
 
         // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Delete(int id)
         {
             RetunObject<Account> data = await userService.DeleteUser(id);
