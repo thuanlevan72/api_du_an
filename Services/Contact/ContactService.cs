@@ -52,6 +52,7 @@ namespace FOLYFOOD.Services.Contact
             contactCreate.Phone = data.Phone;
             contactCreate.Subject = data.Subject;
             contactCreate.Email = data.Email;
+            contactCreate.UserName = data.UserName;
             contactCreate.answered = false;
             DBContext.Contacts.Add(contactCreate);
             DBContext.SaveChanges();
