@@ -120,7 +120,7 @@ namespace POLYFOOD.Controllers
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
+                expires: DateTime.Now.AddHours(4),
                 signingCredentials: cred                                                                                
             );
 

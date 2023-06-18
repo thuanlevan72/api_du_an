@@ -247,6 +247,8 @@ namespace FOLYFOOD.Services.product
             checkProduct.Discount = product.Discount.Value;
             checkProduct.Status = product.Status.Value;
             checkProduct.Title = product.Title;
+            checkProduct.fullDescription = string.IsNullOrEmpty(product.fullDescription) ? checkProduct.fullDescription : product.fullDescription;
+            checkProduct.shortDescription = string.IsNullOrEmpty(product.shortDescription) ? checkProduct.shortDescription : product.shortDescription;
             checkProduct.UpdatedAt = DateTime.Now;
           DBContext.Products.Update(checkProduct);
           await DBContext.SaveChangesAsync();
@@ -295,6 +297,46 @@ namespace FOLYFOOD.Services.product
         {
             var data = DBContext.Products.Include(x => x.ProductType).Where(x => x.Discount > 0).OrderByDescending(x=>x.CreatedAt).Take(8).AsQueryable();
             return data;
+        }
+
+        public async Task<List<ProductResponse>> getAllProductFrontend()
+        {
+            List<ProductResponse> dataRes  = new List<ProductResponse>();
+            var data = DBContext.Products.Include(x => x.ProductType).Include(x=>x.ProductImages).Where(x => x.Status == 1).OrderBy(x=>x.number_of_views).ThenBy(x=>x.ProductId).AsQueryable();
+            foreach (var item in data)
+            {
+                var dataOne = new ProductResponse();
+                dataOne.tag.Add(item.ProductType.NameProductType.ToString());
+                dataOne.image.Add(item.AvartarImageProduct);
+                if(item.ProductImages.Count > 0)
+                {
+                    foreach (var image in item.ProductImages)
+                    {
+                        dataOne.image.Add(image.ImageProduct);
+                    }
+                }
+                DateTime currentDate = DateTime.Today;
+                DateTime availableDate = item.CreatedAt;
+
+                TimeSpan difference = currentDate - availableDate;
+                int daysDifference = difference.Days;
+                dataOne.id = item.ProductId.ToString();
+                dataOne.sku = item.ProductId.ToString() + "key" + new Random().Next(1,199);
+                dataOne.price = item.Price;
+                dataOne.discount = item.Discount;
+                Console.WriteLine(daysDifference);
+                dataOne.rating = 5;
+                dataOne.stock = item.Quantity;
+                dataOne.name = item.NameProduct;
+                dataOne.saleCount = item.Quantity;
+                dataOne.category.Add(item.ProductType.NameProductType.ToString());
+                dataOne.new_product = daysDifference <= 5;
+                dataOne.fullDescription = string.IsNullOrEmpty(item.fullDescription) ? "dữ liệu chưa được cập nhật" : item.fullDescription;
+                dataOne.shortDescription = string.IsNullOrEmpty(item.shortDescription) ? "dữ liệu chưa được cập nhật" : item.shortDescription;
+                dataRes.Add(dataOne);
+
+            }
+            return dataRes;
         }
     }
 }
