@@ -16,6 +16,8 @@ namespace FOLYFOOD.IService.IProduct
 
         public Task<RetunObject<Product>> deleteProduct(int productId);
 
+        public Task<IQueryable<Product>> GetLimitProductSeal();
+
         public Task<RetunObject<Product>> getDetailproduct(int productId);
 
     }

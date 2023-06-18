@@ -117,7 +117,7 @@ namespace FOLYFOOD.Services.Contact
                 return new RetunObject<Entitys.Contact>()
                 {
                     data = null,
-                    mess = textRes,
+                    mess = "thông tin liên hệ lại không thành công có thể là sai email",
                     statusCode = 404,
                 };
             }

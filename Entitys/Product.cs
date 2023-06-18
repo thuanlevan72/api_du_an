@@ -14,6 +14,8 @@ namespace FOLYFOOD.Entitys
         public int number_of_views { get; set; }
         public int Quantity { get; set; }
         public int Discount { get; set; }
+        public string shortDescription { get; set; }
+        public string fullDescription { get; set; }
         public int Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

@@ -1,7 +1,9 @@
-﻿using FOLYFOOD.Dto;
+﻿using Azure.Messaging;
+using FOLYFOOD.Dto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
 using FOLYFOOD.Hellers.imageChecks;
+using FOLYFOOD.Hellers.Mail;
 using FOLYFOOD.Hellers.validate;
 using Microsoft.EntityFrameworkCore;
 using BCryptNet = BCrypt.Net.BCrypt;
@@ -62,6 +64,7 @@ namespace FOLYFOOD.Services
         }
         public async Task<Account> Register(RegisterRequets data)
         {
+
             if (data.UserName == ""  || data.Password == "")
             {
                 return null;
@@ -78,6 +81,7 @@ namespace FOLYFOOD.Services
            
             string imageUrl = "";
             string hashedPassword = "";
+            hashedPassword = BCryptNet.HashPassword(data.Password);
             if (data.Avatar != null)
             {
                 if (!ImageChecker.IsImage(data.Avatar, imageSize))
@@ -89,7 +93,7 @@ namespace FOLYFOOD.Services
                 imageUrl = await uplloadFile.UploadFile(avatarFile);
 
                 // Mã hóa mật khẩu
-                hashedPassword = BCryptNet.HashPassword(data.Password);
+             
             }
 
             ////// Kiểm tra mật khẩu
@@ -103,7 +107,7 @@ namespace FOLYFOOD.Services
                 UserName = data.UserName,
                 Email = data.Email,
             };
-
+            SendMail.send(data.Email, Template1.temlapteHtmlMail(), "poly food");
             await DBContext.Accounts.AddAsync(res);
             await DBContext.SaveChangesAsync();
             var user = new User()

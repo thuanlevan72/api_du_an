@@ -22,7 +22,7 @@ namespace FOLYFOOD.Services.product
             ProductType checkTypeProduct = null;
             try
             {
-                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || string.IsNullOrEmpty(product.Title) || product.AvartarImageProduct == null || product.Quantity < 0)
+                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || string.IsNullOrEmpty(product.shortDescription) || string.IsNullOrEmpty(product.fullDescription) || string.IsNullOrEmpty(product.Title) || product.AvartarImageProduct == null || product.Quantity < 0)
                 {
                     throw new Exception("dữ liệu sản phẩm chuyền lên không đầy đủ");
                 }
@@ -62,6 +62,8 @@ namespace FOLYFOOD.Services.product
                 Price = product.Price,
                 Quantity = product.Quantity,
                 Discount = product.Discount.Value,
+                fullDescription = product.fullDescription,
+                shortDescription = product.shortDescription,
                 Status = product.Status.Value,
                 Title = product.Title,
 
@@ -166,7 +168,6 @@ namespace FOLYFOOD.Services.product
                 statusCode = 200
             };
         }
-
         public async Task<IQueryable<Product>> getProducts(String? search = "", Double? priceFrom = 0, Double? priceTo = 0)
         {
             var data = DBContext.Products.Include(x => x.ProductType).Where(x => x.Status == 1).AsQueryable();
@@ -288,6 +289,12 @@ namespace FOLYFOOD.Services.product
                 statusCode = 200
             };
             throw new NotImplementedException();
+        }
+
+        public async Task<IQueryable<Product>> GetLimitProductSeal()
+        {
+            var data = DBContext.Products.Include(x => x.ProductType).Where(x => x.Discount > 0).OrderByDescending(x=>x.CreatedAt).Take(8).AsQueryable();
+            return data;
         }
     }
 }
