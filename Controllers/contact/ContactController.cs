@@ -48,7 +48,7 @@ namespace FOLYFOOD.Controllers.contact
             RetunObject<Contact> res = contactService.addContact(data);
             if (res.errorOccurred)
             {
-                return BadRequest(res);
+                return NotFound(res);
             }
             return Ok(res);
         }
@@ -58,7 +58,7 @@ namespace FOLYFOOD.Controllers.contact
             RetunObject<Contact> res = contactService.replyToContact(email,mess);
             if (res.errorOccurred)
             {
-                return BadRequest(res);
+                return NotFound(res);
             }
             return Ok(res);
         }

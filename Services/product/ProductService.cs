@@ -324,7 +324,6 @@ namespace FOLYFOOD.Services.product
                 dataOne.sku = item.ProductId.ToString() + "key" + new Random().Next(1,199);
                 dataOne.price = item.Price;
                 dataOne.discount = item.Discount;
-                Console.WriteLine(daysDifference);
                 dataOne.rating = 5;
                 dataOne.stock = item.Quantity;
                 dataOne.name = item.NameProduct;

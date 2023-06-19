@@ -21,7 +21,7 @@ namespace FOLYFOOD.Services.Contact
         {
             try
             {
-                if (string.IsNullOrEmpty(data.Address) || string.IsNullOrEmpty(data.UserName) || string.IsNullOrEmpty(data.Phone) || string.IsNullOrEmpty(data.Subject) || string.IsNullOrEmpty(data.Email))
+                if (string.IsNullOrEmpty(data.UserName) || string.IsNullOrEmpty(data.Phone) || string.IsNullOrEmpty(data.Subject) || string.IsNullOrEmpty(data.Email))
                 {
                     throw new Exception("dữ liệu truyền lên không hợp lệ");
                 }
@@ -48,7 +48,7 @@ namespace FOLYFOOD.Services.Contact
                 };
             }
             var contactCreate = new Entitys.Contact();
-            contactCreate.Address = data.Address;
+            contactCreate.Address = "";
             contactCreate.Phone = data.Phone;
             contactCreate.Subject = data.Subject;
             contactCreate.Email = data.Email;

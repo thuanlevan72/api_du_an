@@ -130,6 +130,10 @@ namespace FOLYFOOD.Services
             {
                 return null;
             }
+            if (account1.Status != 1)
+            {
+                return null;
+            }
             bool isPasswordCorrect = BCryptNet.Verify(password, account1.Password);
             if (isPasswordCorrect)
             {

@@ -6,8 +6,9 @@ namespace FOLYFOOD.Entitys
     public class Order
     {
         public int OrderId { get; set; }
-        public int PaymentId { get; set; }
-        public int UserId { get; set; }
+        public string CodeOrder { get; set; }
+        public int PaymentOrderPaymentId { get; set; }
+        public int? UserId { get; set; }
         public int OrderStatusId { get; set; }
         public double originalPrice { get; set; }
         public double actualPrice { get; set; }
