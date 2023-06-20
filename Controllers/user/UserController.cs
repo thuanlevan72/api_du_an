@@ -8,6 +8,8 @@ using FOLYFOOD.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,10 +66,21 @@ namespace FOLYFOOD.Controllers.user
         }
 
         // PUT api/<UserController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "client, admin")]
         public async Task<IActionResult> Put(int id, [FromForm] UserUpdateClient value)
         {
-            RetunObject<Account> data = await userService.updateOneAccount(value, id);
+            // Lấy token từ HttpContext
+            string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            // Giải mã JWT và lấy thông tin accountId từ payload
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            string accountId = jwtToken.Claims.FirstOrDefault(c => c.Type == "accountId")?.Value;
+
+            // Lấy role của người dùng từ HttpContext
+            string role = HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+
+            RetunObject<Account> data = await userService.updateOneAccount(value, id, accountId, role);
             return Ok(data);
         }
         [HttpPut("update_avatar/{id}")]

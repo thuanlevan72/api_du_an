@@ -7,6 +7,7 @@
         public int? UserId { get; set; }
         public int OrderStatusId { get; set; }
         public double originalPrice { get; set; }
+        public string? noteOrder { set; get; }
         public double actualPrice { get; set; }
         public string FullName { get; set; }
         public string Phone { get; set; }

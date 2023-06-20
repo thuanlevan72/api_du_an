@@ -16,6 +16,7 @@ namespace FOLYFOOD.Entitys
         public string Phone { get; set; }
         public string Address { get; set; } 
         public string Email { get; set; }
+        public string noteOrder { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         // Mối quan hệ: Một Order có nhiều OrderDetail

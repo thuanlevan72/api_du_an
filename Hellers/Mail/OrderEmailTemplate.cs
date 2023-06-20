@@ -78,7 +78,7 @@ namespace FOLYFOOD.Hellers.Mail
                 <table>
                     <tr>
                         <th>Mã sản phẩm</th>
-                        <th>Ảnh sản phẩm</th>
+                        <th>Tên sản phẩm</th>
                         <th>Số lượng</th>
                         <th>Giá</th>
                     </tr>";
@@ -88,7 +88,7 @@ namespace FOLYFOOD.Hellers.Mail
                 htmlContent += $@"
                     <tr>
                         <td>{detail.ProductId}</td>
-                        <td><img src=""{detail.Product.AvartarImageProduct}"" alt =""Hình ảnh Poly Food"" class=""image""></td>
+                        <td>{detail.Product.NameProduct}</td>
                         <td>{detail.Quantity}</td>
                         <td>{detail.Price}</td>
                     </tr>";

@@ -89,7 +89,7 @@ namespace POLYFOOD.Controllers
             // if credentials are valid
             if (data != null)
             {
-                string token = CreateToken(data.UserName, data.Decentralization.AuthorityName.ToLower());
+                string token = CreateToken(data.UserName, data.AccountId, data.Decentralization.AuthorityName.ToLower());
 
                 loginResponse.Token = token;
                 loginResponse.responseMsg = new HttpResponseMessage()
@@ -107,13 +107,14 @@ namespace POLYFOOD.Controllers
             }
         }
 
-        private string CreateToken(string username,string role)
+        private string CreateToken(string username,int accountId, string role)
         {
 
             List<Claim> claims = new()
             {                    
                 //list of Claims - we only checking username - more claims can be added.
                 new Claim("username", Convert.ToString(username)),
+                new Claim("accountId", Convert.ToString(accountId)),
                 new Claim("role", Convert.ToString(role)),
                  new Claim(ClaimTypes.Role, role)
         };
@@ -122,7 +123,7 @@ namespace POLYFOOD.Controllers
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddHours(10),
+                expires: DateTime.Now.AddHours(4),
                 signingCredentials: cred                                                                                
             );
 

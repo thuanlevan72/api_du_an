@@ -4,6 +4,7 @@ using FOLYFOOD.Dto.oderDto.orderDetailDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
 using FOLYFOOD.Hellers.Mail;
+using FOLYFOOD.Hellers.validate;
 using FOLYFOOD.IService.IOrder;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -60,6 +61,7 @@ namespace FOLYFOOD.Services.order
                 PaymentOrderPaymentId = 1,
                 Address = order.Address,
                 Email = order.Email,
+                noteOrder = !string.IsNullOrEmpty(order.noteOrder) ? order.noteOrder : "",
                 Phone = order.Phone,
                 FullName = order.FullName,
                 actualPrice = order.actualPrice,
@@ -83,7 +85,7 @@ namespace FOLYFOOD.Services.order
             }
             await DBContext.OrderDetails.AddRangeAsync(listOrder);
             await DBContext.SaveChangesAsync();
-
+            await this.getOrderForCodeOrder(orderCreate.CodeOrder);
 
             return new RetunObject<Order>()
             {
@@ -110,7 +112,9 @@ namespace FOLYFOOD.Services.order
                     statusCode = 400
                 };
             }
-            SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne), "test mail");
+            if(ValidateValue.IsValidEmail(dataOne.Email)) {
+                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne), "test mail");
+            }
             return new RetunObject<Order>()
             {
                 data = dataOne,

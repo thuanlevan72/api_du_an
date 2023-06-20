@@ -156,12 +156,20 @@ namespace FOLYFOOD.Services
                 statusCode = 204,
             }; ;
         }
-        public async Task<RetunObject<Account>> updateOneAccount(UserUpdateClient account, int id)
+        public async Task<RetunObject<Account>> updateOneAccount(UserUpdateClient account, int id, string accountId, string role)
         {
+          
             Account userUpdate = await DbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == id);
             User detailUser = await DbContext.Users.FirstOrDefaultAsync(y => y.AccountId == id);
             try
             {
+                if (role != "admin")
+                {
+                    if(int.Parse(accountId) != userUpdate.AccountId)
+                    {
+                        throw new Exception("bạn không có quyền sửa tài khoảng của người khác");
+                    }
+                }
                 if (userUpdate == null)
                 {
                     throw new Exception("thông tin người dùng không tồn tại");
@@ -178,7 +186,6 @@ namespace FOLYFOOD.Services
                 {
                     throw new Exception("phone nhập vào không hợp lệ");
                 }
-
             }
             catch (Exception ex)
             {
