@@ -8,8 +8,8 @@ namespace FOLYFOOD.IService.IProduct.IImageProduct
     public interface ImageProductInterface
     {
         public Task<RetunObject<IQueryable<ProductImage>>> CreateListImage(List<IFormFile> images, int idProduct);
-        public Task<RetunObject<IQueryable<ProductImage>>> UpdateListImage(List<ImageProductDto> product);
-        public Task<RetunObject<IQueryable<ProductImage>>> DeleteListImage(List<ImageProductDto> product);
+        public Task<RetunObject<ProductImage>> UpdateImage(ImageProductDto product);
+        public Task<RetunObject<ProductImage>> DeleteListImage(int id);
         public Task<IQueryable<ProductImage>> getListImageByIdProduct(int productId);
     }
 }

@@ -46,10 +46,10 @@ namespace FOLYFOOD.Entitys
                 .Property(a => a.CreatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
             modelBuilder.Entity<Account>()
-                .Property(a => a.UpdateAt)
+                .Property(a => a.UpdatedAt)
                 .HasDefaultValue(DateTime.UtcNow);
             modelBuilder.Entity<Account>()
-               .Property(d => d.UpdateAt)
+               .Property(d => d.UpdatedAt)
                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Decentralization>()
@@ -216,7 +216,8 @@ namespace FOLYFOOD.Entitys
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-NTJ1ROJ; Database=test; integrated security=sspi;TrustServerCertificate=True");
+             //optionsBuilder.UseSqlServer("Server=DESKTOP-NTJ1ROJ; Database=test; integrated security=sspi;TrustServerCertificate=True");
+             optionsBuilder.UseSqlServer("Server=203.113.174.12\\MSSQLSERVER2019,1437; Database=polyfood; User Id=thuanlevan72; Password=@Anh123anh; TrustServerCertificate=True; MultipleActiveResultSets=True;");
         }
     }
 }

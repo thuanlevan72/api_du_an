@@ -33,7 +33,7 @@ namespace FOLYFOOD.Entitys
         public DateTime CreatedAt { get; set; }
 
         [Column("update_at")]
-        public DateTime UpdateAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
         public Decentralization Decentralization { get; set; }
 

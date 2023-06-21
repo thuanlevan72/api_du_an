@@ -82,9 +82,28 @@ namespace FOLYFOOD.Services.product.ImageProduct
 
         }
 
-        public Task<RetunObject<IQueryable<ProductImage>>> DeleteListImage(List<ImageProductDto> product)
+        public async Task<RetunObject<ProductImage>> DeleteListImage(int id)
         {
-            throw new NotImplementedException();
+           var imageProduct = DBContext.ProductImages.FirstOrDefault(x=>x.ProductImageId == id);
+            if (imageProduct != null)
+            {
+                return new RetunObject<ProductImage>()
+                {
+                    data = null,
+                    mess = "ảnh không tồn tại để xóa",
+                    statusCode = 401
+                };
+            }
+            await uplloadFile.DeleteFile(imageProduct.ImageProduct);
+
+            DBContext.Remove(imageProduct);
+            DBContext.SaveChanges();
+            return new RetunObject<ProductImage>()
+            {
+                data = imageProduct,
+                mess = "xóa ảnh thành công",
+                statusCode = 200
+            };
         }
 
         public Task<IQueryable<ProductImage>> getListImageByIdProduct(int productId)
@@ -92,9 +111,41 @@ namespace FOLYFOOD.Services.product.ImageProduct
             throw new NotImplementedException();
         }
 
-        public Task<RetunObject<IQueryable<ProductImage>>> UpdateListImage(List<ImageProductDto> product)
+        public async Task<RetunObject<ProductImage>> UpdateImage(ImageProductDto product)
         {
-            throw new NotImplementedException();
+            var imageProduct = await DBContext.ProductImages.FirstOrDefaultAsync(x => x.ProductImageId == product.ProductImageId);
+            try
+            {
+                if (imageProduct == null)
+                {
+                    throw new Exception("Sản phẩm không tồn tại");
+                }
+
+                if (!ImageChecker.IsImage(product.ImageProduct))
+                {
+                    throw new Exception("có lỗi trong quá trình sử lý ảnh");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new RetunObject<ProductImage>()
+                {
+                    data = null,
+                    mess = ex.Message,
+                    statusCode = 401
+                };
+            }
+            string url = await  uplloadFile.UpdateFile(imageProduct.ImageProduct, product.ImageProduct);
+            imageProduct.ImageProduct = url;
+            DBContext.Update(imageProduct);
+            DBContext.SaveChangesAsync();   
+            return new RetunObject<ProductImage>()
+            {
+                data = imageProduct,
+                mess = "đã thay đổi ảnh thành công",
+                statusCode = 401
+            };
         }
     
 }

@@ -1,4 +1,5 @@
-﻿using FOLYFOOD.Dto;
+﻿using CloudinaryDotNet.Actions;
+using FOLYFOOD.Dto;
 using FOLYFOOD.Dto.UserDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
@@ -6,6 +7,7 @@ using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.Hellers.validate;
 using FOLYFOOD.IService;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace FOLYFOOD.Services
@@ -117,11 +119,19 @@ namespace FOLYFOOD.Services
             await DbContext.SaveChangesAsync();
             return res;
         }
-        public async Task<RetunObject<string>> updateImageAvatar(IFormFile file,int id)
+        public async Task<RetunObject<string>> updateImageAvatar(IFormFile file,int id ,string accountId,string role)
         {
+
             Account userUpdate = await DbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == id);
             try
             {
+                if (role != "admin")
+                {
+                    if (int.Parse(accountId) != userUpdate.AccountId)
+                    {
+                        throw new Exception("bạn không có quyền sửa tài khoảng của người khác");
+                    }
+                }
                 if (userUpdate == null)
                 {
                     throw new Exception("thông tin người dùng không tồn tại");

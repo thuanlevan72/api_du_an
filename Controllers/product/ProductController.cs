@@ -4,10 +4,12 @@ using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.IService.IContact;
 using FOLYFOOD.Services.Contact;
+using FOLYFOOD.Services.order;
 using FOLYFOOD.Services.product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.Net.NetworkInformation;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -117,9 +119,14 @@ namespace FOLYFOOD.Controllers.product
         }
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}"), Authorize(Roles = "staff, admin")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-
+            RetunObject<Product> res = await productService.deleteProduct(id);
+            if (res.errorOccurred)
+            {
+                return NotFound(res);
+            }
+            return Ok(res);
         }
     }
 }

@@ -99,8 +99,14 @@ namespace FOLYFOOD.Services.product
                 };
             }
             await uplloadFile.DeleteFile(checkProduct.AvartarImageProduct);
+            var listImage = DBContext.ProductImages.Where(x => x.ProductId == productId).ToList();
+            if(listImage.Count > 0)
+            {
+                DBContext.ProductImages.RemoveRange(listImage);
+                await  DBContext.SaveChangesAsync();
+            }
             DBContext.Products.Remove(checkProduct);
-
+            await DBContext.SaveChangesAsync();
             return new RetunObject<Product>()
             {
                 data = checkProduct,

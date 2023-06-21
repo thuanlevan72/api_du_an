@@ -37,17 +37,10 @@ namespace FOLYFOOD.Controllers.order
             return Ok(test);
         }
         [HttpGet("getDetailForEmail/{email}")]
-        public async Task<IActionResult> GetOrderEmail(string email, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetOrderEmail(string email)
         {
              var data = await orderServicer.GetOrderForEmail(email);
-            var res = PaginationHelper.GetPagedData(data, page, pageSize);
-            RetunObject<PagedResult<Order>> test = new RetunObject<PagedResult<Order>>()
-            {
-                data = res,
-                mess = res.Data.Count() > 0 ? "đã lấy được dữ liệu" : "không có data",
-                statusCode = 200,
-            };
-            return Ok(res);
+            return Ok(data);
         }
         [HttpGet("getDetail/{id}")]
         public async Task<IActionResult> getDetail(int id)

@@ -147,6 +147,10 @@ namespace FOLYFOOD.Services.order
                     statusCode = 401
                 };
             }
+            if (ValidateValue.IsValidEmail(dataOne.Email))
+            {
+                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne, "Cập nhật trạng thái đơn"), "test mail");
+            }
             dataOne.OrderStatusId = statusId;
             DBContext.Orders.Update(dataOne);
             DBContext.SaveChanges();

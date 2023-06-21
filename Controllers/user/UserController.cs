@@ -83,10 +83,21 @@ namespace FOLYFOOD.Controllers.user
             RetunObject<Account> data = await userService.updateOneAccount(value, id, accountId, role);
             return Ok(data);
         }
-        [HttpPut("update_avatar/{id}")]
+        [HttpPut("update_avatar/{id}"), Authorize(Roles = "client, admin")]
         public async Task<IActionResult> PutImageAvatar(int id, IFormFile Avatar)
         {
-            RetunObject<string> link = await userService.updateImageAvatar(Avatar, id);
+            // Lấy token từ HttpContext
+            string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            // Giải mã JWT và lấy thông tin accountId từ payload
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            string accountId = jwtToken.Claims.FirstOrDefault(c => c.Type == "accountId")?.Value;
+
+            // Lấy role của người dùng từ HttpContext
+            string role = HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+
+            RetunObject<string> link = await userService.updateImageAvatar(Avatar, id, accountId, role);
             return Ok(link);
         }
 

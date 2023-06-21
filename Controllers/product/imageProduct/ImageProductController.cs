@@ -59,6 +59,12 @@ namespace FOLYFOOD.Controllers.product.imageProduct
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            //RetunObject<IQueryable<ProductImage>> res = await imageProductService.DeleteListImage(value, id);
+            //if (res.errorOccurred)
+            //{
+            //    return NotFound(res);
+            //}
+            //return Ok(res);
         }
     }
 }

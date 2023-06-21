@@ -4,7 +4,7 @@ namespace FOLYFOOD.Hellers.Mail
 {
     public class OrderEmailTemplate
     {
-        public static string GenerateOrderEmail(Order order)
+        public static string GenerateOrderEmail(Order order, string mess = "")
         {
             string htmlContent = $@"
             <html>
@@ -45,6 +45,7 @@ namespace FOLYFOOD.Hellers.Mail
             </head>
             <body>
                 <h1>Thông tin đơn hàng</h1>
+                <h2>{(string.IsNullOrEmpty(mess) ? "" : mess)}</h2>
                 <table>
                     <tr>
                         <th>Mã đơn hàng</th>
@@ -98,7 +99,7 @@ namespace FOLYFOOD.Hellers.Mail
                        <tr>
                         <td style=""text-align: center;"">tổng tiền</td>
                         <td colspan=""3"" style=""text-align: right;"">{order.actualPrice}</td>
-                    </tr>"";
+                    </tr>
                 </table>
                 
                 <div class=""footer"">
