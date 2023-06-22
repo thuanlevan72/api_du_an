@@ -50,13 +50,13 @@ namespace FOLYFOOD.Controllers.product.imageProduct
         }
 
         // PUT api/<ImageProductController>/5
-        [HttpPut("{id}")]
+        [HttpPost("updateimage/{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<ImageProductController>/5
-        [HttpDelete("{id}")]
+        [HttpGet("deleteimage/{id}")]
         public void Delete(int id)
         {
             //RetunObject<IQueryable<ProductImage>> res = await imageProductService.DeleteListImage(value, id);

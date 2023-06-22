@@ -62,12 +62,12 @@ namespace FOLYFOOD.Controllers.info
         }
 
         // PUT api/<InfoController>/5
-        [HttpPut("{id}")]
+        [HttpPost("update/{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
         // PUT api/<InfoController>/5
-        [HttpPut("showinfo/{id}"), Authorize(Roles = "staff, admin")]
+        [HttpGet("showinfo/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> showInfo(int id)
         {
             RetunObject<Info> res = await infoServicer.showInfo(id);
@@ -78,7 +78,7 @@ namespace FOLYFOOD.Controllers.info
             return Ok(res);
         }
         // DELETE api/<InfoController>/5
-        [HttpDelete("{id}")]
+        [HttpGet("delete/{id}")]
         public void Delete(int id)
         {
 

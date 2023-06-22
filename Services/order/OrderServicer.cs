@@ -1,4 +1,6 @@
-﻿using FOLYFOOD.Dto;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using FOLYFOOD.Dto;
 using FOLYFOOD.Dto.oderDto;
 using FOLYFOOD.Dto.oderDto.orderDetailDto;
 using FOLYFOOD.Entitys;
@@ -7,7 +9,9 @@ using FOLYFOOD.Hellers.Mail;
 using FOLYFOOD.Hellers.validate;
 using FOLYFOOD.IService.IOrder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace FOLYFOOD.Services.order
 {
@@ -67,6 +71,7 @@ namespace FOLYFOOD.Services.order
                 actualPrice = order.actualPrice,
                 UserId = order.UserId,
                 originalPrice = order.originalPrice,
+
                 
             };
             await DBContext.Orders.AddAsync(orderCreate);
@@ -97,7 +102,9 @@ namespace FOLYFOOD.Services.order
 
         public async Task<IQueryable<Order>> GetAllOrders()
         {
-           return DBContext.Orders.Include(x => x.OrderStatus).Include(x => x.OrderDetails).Include(x => x.PaymentOrder).Include(x => x.User).Include(x => x.OrderDetails).AsQueryable();
+            var DataOrder = DBContext.Orders.Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
+            return res.OrderByDescending(x=>x.CreatedAt);
         }
 
         public async Task<RetunObject<Order>> getOrderForCodeOrder(string code)
@@ -161,30 +168,103 @@ namespace FOLYFOOD.Services.order
                 statusCode = 201
             };
         }
-
-        public async Task<IQueryable<Order>> GetOrderForEmail(string code)
+        public async Task<IQueryable<Order>> orderIsCanceled()
         {
-            return DBContext.Orders.Where(x=>x.Email == code).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x=>x.Product).AsQueryable();
+            var DataOrder = DBContext.Orders.Where(x=>x.OrderStatusId == 7).Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
+            return res.OrderByDescending(x => x.CreatedAt);
+        }
+        public async Task<IQueryable<Order>> getOrdersAreBeingDelivered()
+        {
+            var DataOrder = DBContext.Orders.Where(x => x.OrderStatusId == 9).Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
+            return res.OrderByDescending(x => x.CreatedAt);
+        }
+        public async Task<IQueryable<Order>> getWaitingOrder()
+        {
+            var DataOrder = DBContext.Orders.Where(x => x.OrderStatusId == 4).Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
+            return res.OrderByDescending(x => x.CreatedAt);
+        }
+        public async Task<IQueryable<Order>> getOrderComplete()
+        {
+            var DataOrder = DBContext.Orders.Where(x => x.OrderStatusId == 5).Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
+            return res.OrderByDescending(x => x.CreatedAt);
+        }
+        public async Task<IQueryable<Order>> GetOrderForEmail(string email,string accountId,string role)
+        {
+            if(role != "admin")
+            {
+                var user  = DBContext.Accounts.SingleOrDefault(x=>x.User.Email == email);
+                if(int.Parse(accountId) != user.AccountId)
+                {
+                    return null;
+                }
+            }
+            return DBContext.Orders.Where(x=>x.Email == email).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x=>x.Product).AsQueryable();
         }
 
-        public async Task<RetunObject<Order>> getDetail(int id)
-        {
-            var dataOne = await DBContext.Orders.Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.OrderId == id);
-            if(dataOne == null)
+        public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role) {
+            var order = DBContext.Orders.Include(x => x.User).SingleOrDefault(x => x.CodeOrder == code);
+            try
+            {
+                if(order == null)
+                {
+                    throw new Exception("đơn hàng không tồn tại");
+                }
+                if (role != "admin")
+                {
+                    var user = order.User;
+                    if (int.Parse(accountId) != user.AccountId)
+                    {
+                        throw new Exception("bạn không quyền hủy đơn hàng của người khác");
+                    }
+                }
+                DateTime currentDate = DateTime.Today;
+                DateTime availableDate = order.CreatedAt;
+
+                TimeSpan difference = currentDate - availableDate;
+                int daysDifference = difference.Days;
+                if (daysDifference > 2)
+                {
+                    throw new Exception("đơn hàng của quý khách đã quá hạn để hủy");
+                }
+
+                if(order.OrderStatusId != 4)
+                {
+                    throw new Exception("đơn hàng đã đang quá trình giao không được hủy");
+                }
+            }
+            catch (Exception ex)
             {
                 return new RetunObject<Order>()
                 {
                     data = null,
-                    mess = "thông tin hóa đơn không tồn tại",
-                    statusCode = 400
+                    mess = ex.Message,
+                    statusCode = 401
                 };
             }
+            order.User = null;
+            order.OrderStatusId = 7;
+            DBContext.Orders.Update(order);
+            DBContext.SaveChanges();
             return new RetunObject<Order>()
             {
-                data = dataOne,
-                mess = "đã lấy được hóa đơn thành công",
-                statusCode = 200
-            }; 
+                data = order,
+                mess = "đơn hàng đã bị hủy",
+                statusCode = 201
+            };
+        }
+
+        public async Task<IQueryable<OrderDetail>> getDetail(int id)
+        {
+            var dataOne = DBContext.OrderDetails.Where(x=>x.OrderId == id).Include(x=>x.Product).AsQueryable();
+            if(dataOne == null)
+            {
+                return null;
+            }
+           return dataOne;
         }
     }
 }

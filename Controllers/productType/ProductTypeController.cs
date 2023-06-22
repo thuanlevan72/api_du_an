@@ -60,7 +60,7 @@ namespace FOLYFOOD.Controllers.productType
         }
 
         // PUT api/<ProductTypeController>/5
-        [HttpPut("{id}"), Authorize(Roles = "staff, admin")]
+        [HttpPost("update/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Put(int id, [FromForm] ProductTypeDto data)
         {
             var res = await TypeProductService.updateProductType(id,data);
@@ -72,7 +72,7 @@ namespace FOLYFOOD.Controllers.productType
         }
 
         // DELETE api/<ProductTypeController>/5
-        [HttpDelete("{id}"), Authorize(Roles = "staff, admin")]
+        [HttpGet("delete/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var res = await TypeProductService.DeleteproductType(id);

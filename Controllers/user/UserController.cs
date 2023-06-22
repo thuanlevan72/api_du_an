@@ -66,7 +66,7 @@ namespace FOLYFOOD.Controllers.user
         }
 
         // PUT api/<UserController>/5
-        [HttpPut("{id}"), Authorize(Roles = "client, admin")]
+        [HttpPost("updateUser/{id}"), Authorize(Roles = "client, admin")]
         public async Task<IActionResult> Put(int id, [FromForm] UserUpdateClient value)
         {
             // Lấy token từ HttpContext
@@ -83,7 +83,7 @@ namespace FOLYFOOD.Controllers.user
             RetunObject<Account> data = await userService.updateOneAccount(value, id, accountId, role);
             return Ok(data);
         }
-        [HttpPut("update_avatar/{id}"), Authorize(Roles = "client, admin")]
+        [HttpPost("update_avatar/{id}"), Authorize(Roles = "client, admin")]
         public async Task<IActionResult> PutImageAvatar(int id, IFormFile Avatar)
         {
             // Lấy token từ HttpContext
@@ -102,7 +102,7 @@ namespace FOLYFOOD.Controllers.user
         }
 
         // DELETE api/<UserController>/5
-        [HttpDelete("{id}"), Authorize(Roles = "staff, admin")]
+        [HttpGet("delete/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Delete(int id)
         {
             RetunObject<Account> data = await userService.DeleteUser(id);

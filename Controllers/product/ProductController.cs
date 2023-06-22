@@ -96,7 +96,7 @@ namespace FOLYFOOD.Controllers.product
         }
 
         // PUT api/<ValuesController>/5
-        [HttpPut("{id}"), Authorize(Roles = "staff, admin")]
+        [HttpPost("update/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Put(int id, [FromForm] ProductDto value)
         {
 
@@ -107,7 +107,7 @@ namespace FOLYFOOD.Controllers.product
             }
             return Ok(res);
         }
-        [HttpPut("update_status/{id}"), Authorize(Roles = "staff, admin")]
+        [HttpPost("update_status/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> PutStatus(int id)
         {
             RetunObject<Product> res = await productService.updateStatus(id);
@@ -118,7 +118,7 @@ namespace FOLYFOOD.Controllers.product
             return Ok(res);
         }
         // DELETE api/<ValuesController>/5
-        [HttpDelete("{id}"), Authorize(Roles = "staff, admin")]
+        [HttpGet("delete/{id}"), Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Delete(int id)
         {
             RetunObject<Product> res = await productService.deleteProduct(id);

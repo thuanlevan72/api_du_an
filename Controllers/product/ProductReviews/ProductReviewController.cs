@@ -69,11 +69,11 @@ namespace FOLYFOOD.Controllers.product.ProductReviews
         }
 
         // PUT api/<ProductReviewController>/5
-        [HttpPut("{id}")]
+        [HttpPost("update/{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
-        [HttpPut("phanhoi/{ProductReviewId}")]
+        [HttpPost("phanhoi/{ProductReviewId}")]
         public async Task<IActionResult> replyReview(int ProductReviewId, [FromBody] string mess)
         {
             RetunObject<ProductReview> res = await productReviewService.replyReview( ProductReviewId, mess);
@@ -85,7 +85,7 @@ namespace FOLYFOOD.Controllers.product.ProductReviews
         }
 
         // DELETE api/<ProductReviewController>/5
-        [HttpDelete("{id}")]
+        [HttpGet("delete/{id}")]
         public void Delete(int id)
         {
         }

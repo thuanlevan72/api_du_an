@@ -64,13 +64,13 @@ namespace FOLYFOOD.Controllers.contact
         }
 
         // PUT api/<ContactController>/5
-        [HttpPut("{id}"), Authorize(Roles = "staff, admin")]
+        [HttpPost("update/{id}"), Authorize(Roles = "staff, admin")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/<ContactController>/5
-        [HttpDelete("{id}")]
+        [HttpGet("delete/{id}")]
         public void Delete(int id)
         {
         }
