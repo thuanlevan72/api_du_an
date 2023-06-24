@@ -61,7 +61,7 @@ namespace FOLYFOOD.Services
         public async Task<IQueryable<Account>> getListUser()
         {
             // lấy dữ liệu user nha 
-            var listUser = DbContext.Accounts.AsNoTracking().Include(x => x.User).OrderByDescending(x=>x.AccountId);
+            var listUser = DbContext.Accounts.AsNoTracking().Include(x => x.User).Include(x=>x.Decentralization).OrderByDescending(x=>x.AccountId);
             return listUser;
         }
 
