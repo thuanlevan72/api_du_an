@@ -14,6 +14,7 @@ using FOLYFOOD.Dto;
 using BCryptNet = BCrypt.Net.BCrypt;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Azure.Core;
 
 namespace POLYFOOD.Controllers
 {
@@ -26,6 +27,21 @@ namespace POLYFOOD.Controllers
         private readonly Context contextDb;
         private readonly Random rnd;
         private readonly UserService userService;
+        private (string, string) GetTokenInfo()
+        {
+            // Lấy token từ HttpContext
+            string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            // Giải mã JWT và lấy thông tin accountId từ payload
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            string accountId = jwtToken.Claims.FirstOrDefault(c => c.Type == "accountId")?.Value;
+
+            // Lấy role của người dùng từ HttpContext
+            string role = HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+
+            return (accountId, role);
+        }
         public LoginController(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -65,6 +81,18 @@ namespace POLYFOOD.Controllers
             return Ok(data);
 
        
+        }
+        [HttpPost("change-pass"), Authorize(Roles = "staff, admin")]
+        public async Task<IActionResult> changePass([FromBody] ChangePassDto value)
+        {
+
+            (string accountId, string role) = GetTokenInfo();
+            var data = await SecurityUser.changePass(value,  accountId,  role);
+            if (data == null)
+            {
+                return BadRequest("đổi mật khẩu thất bại");
+            }
+            return Ok(data);
         }
         [HttpPost("register-staff")]
         public async Task<IActionResult> RegisterStaff([FromForm] RegisterRequets request)

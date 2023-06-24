@@ -22,7 +22,7 @@ namespace FOLYFOOD.Services.product
             ProductType checkTypeProduct = null;
             try
             {
-                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || string.IsNullOrEmpty(product.shortDescription) || string.IsNullOrEmpty(product.fullDescription) || string.IsNullOrEmpty(product.Title) || product.AvartarImageProduct == null || product.Quantity < 0)
+                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || string.IsNullOrEmpty(product.shortDescription) || string.IsNullOrEmpty(product.fullDescription)  || product.AvartarImageProduct == null || product.Quantity < 0)
                 {
                     throw new Exception("dữ liệu sản phẩm chuyền lên không đầy đủ");
                 }
@@ -65,7 +65,7 @@ namespace FOLYFOOD.Services.product
                 fullDescription = product.fullDescription,
                 shortDescription = product.shortDescription,
                 Status = product.Status.Value,
-                Title = product.Title,
+                Title = "",
 
             };
             await DBContext.Products.AddAsync(productCreate);
@@ -199,7 +199,7 @@ namespace FOLYFOOD.Services.product
             Product checkProduct = null;
             try
             {
-                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || string.IsNullOrEmpty(product.Title) || product.Quantity < 0)
+                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || product.Quantity < 0)
                 {
                     throw new Exception("dữ liệu sản phẩm chuyền lên không đầy đủ");
                 }
@@ -252,7 +252,6 @@ namespace FOLYFOOD.Services.product
             checkProduct.Quantity = product.Quantity;
             checkProduct.Discount = product.Discount.Value;
             checkProduct.Status = product.Status.Value;
-            checkProduct.Title = product.Title;
             checkProduct.fullDescription = string.IsNullOrEmpty(product.fullDescription) ? checkProduct.fullDescription : product.fullDescription;
             checkProduct.shortDescription = string.IsNullOrEmpty(product.shortDescription) ? checkProduct.shortDescription : product.shortDescription;
             checkProduct.UpdatedAt = DateTime.Now;
@@ -314,7 +313,7 @@ namespace FOLYFOOD.Services.product
                 var dataOne = new ProductResponse();
                 dataOne.tag.Add(item.ProductType.NameProductType.ToString());
                 dataOne.image.Add(item.AvartarImageProduct);
-                if(item.ProductImages.Count > 0)
+                if (item.ProductImages.Count > 0)
                 {
                     foreach (var image in item.ProductImages)
                     {

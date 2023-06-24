@@ -9,7 +9,6 @@
         public IFormFile? AvartarImageProduct { get; set; }
         public string shortDescription { get; set; }
         public string fullDescription { get; set; }
-        public string Title { get; set; }
         public int? Discount { get; set; }
         public int? Status { get; set; }
     }

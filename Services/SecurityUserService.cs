@@ -62,6 +62,27 @@ namespace FOLYFOOD.Services
             await DBContext.SaveChangesAsync();
             return res;
         }
+        public async Task<Account> changePass(ChangePassDto value, string accountId, string role)
+        {
+            var acc = DBContext.Accounts.FirstOrDefault(x=>x.AccountId == value.AccountId);
+            if(role != "admin")
+            {
+                if(int.Parse(accountId) != acc.AccountId)
+                {
+                    return null;
+                }
+            }
+            if(acc == null)
+            {
+                return acc;
+            }
+            string hashedPassword = "";
+            hashedPassword = BCryptNet.HashPassword(value.Password);
+            acc.Password = hashedPassword;
+            DBContext.Accounts.Update(acc);
+            DBContext.SaveChanges();
+            return acc;
+        }
         public async Task<Account> Register(RegisterRequets data)
         {
 

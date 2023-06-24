@@ -58,7 +58,6 @@ namespace FOLYFOOD.Hellers.Mail
                         <th>Tên người đặt</th>
                         <th>Số điện thoại</th>
                         <th>Địa chỉ</th>
-                        <th>Email</th>
                     </tr>
                     <tr>
                         <td>{order.OrderId}</td>
@@ -71,7 +70,6 @@ namespace FOLYFOOD.Hellers.Mail
                         <td>{order.FullName}</td>
                         <td>{order.Phone}</td>
                         <td>{order.Address}</td>
-                        <td>{order.Email}</td>
                     </tr>
                 </table>
                 
