@@ -228,7 +228,7 @@ namespace FOLYFOOD.Entitys
         {
             //optionsBuilder.UseSqlServer("Server=DESKTOP-NTJ1ROJ; Database=test; integrated security=sspi;TrustServerCertificate=True");
             optionsBuilder.UseSqlServer("Server=203.113.174.12\\MSSQLSERVER2019,1437; Database=polyfood; User Id=thuanlevan72; Password=@Anh123anh; TrustServerCertificate=True; MultipleActiveResultSets=True;");
-            //  optionsBuilder.UseSqlServer("Server=localhost,1437; Database=polyfood; User Id=thuanlevan72; Password=@Anh123anh; TrustServerCertificate=True; MultipleActiveResultSets=True;");
+           //   optionsBuilder.UseSqlServer("Server=localhost,1437; Database=polyfood; User Id=thuanlevan72; Password=@Anh123anh; TrustServerCertificate=True; MultipleActiveResultSets=True;");
 
         }
     }

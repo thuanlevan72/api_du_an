@@ -120,7 +120,7 @@ namespace FOLYFOOD.Services.order
                 };
             }
             if(ValidateValue.IsValidEmail(dataOne.Email)) {
-                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne), "test mail");
+                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne,"thông báo đơn"), "foly food");
             }
             return new RetunObject<Order>()
             {
@@ -156,7 +156,7 @@ namespace FOLYFOOD.Services.order
             }
             if (ValidateValue.IsValidEmail(dataOne.Email))
             {
-                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne, "Cập nhật trạng thái đơn"), "test mail");
+                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne, "Cập nhật trạng thái đơn"), "foly food");
             }
             dataOne.OrderStatusId = statusId;
             DBContext.Orders.Update(dataOne);
@@ -202,7 +202,7 @@ namespace FOLYFOOD.Services.order
                     return null;
                 }
             }
-            return DBContext.Orders.Where(x=>x.Email == email).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x=>x.Product).AsQueryable();
+            return DBContext.Orders.Where(x=>x.Email == email).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x=>x.Product).OrderByDescending(x=>x.CreatedAt).AsNoTracking().AsQueryable();
         }
 
         public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role) {
