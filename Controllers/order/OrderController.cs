@@ -148,7 +148,7 @@ namespace FOLYFOOD.Controllers.order
         }
 
         // PUT api/<OrderController>/5
-        [HttpPost("updateStatusOrder"), Authorize(Roles = "admin")]
+        [HttpPost("updateStatusOrder")]
         public async Task<IActionResult> Put(int id, int idStatus)
         {
             var res = await orderServicer.updateStatusOrder(id,idStatus);

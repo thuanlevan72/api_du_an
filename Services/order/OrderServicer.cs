@@ -137,7 +137,13 @@ namespace FOLYFOOD.Services.order
 
         public async Task<RetunObject<Order>> updateStatusOrder(int orderId, int statusId)
         {
-            var dataOne = DBContext.Orders.SingleOrDefault(x => x.OrderId == orderId);
+            var dataOne = DBContext.Orders.FirstOrDefault(x => x.OrderId == orderId);
+            var OrderDetail  = DBContext.OrderDetails.Where(x=>x.OrderId == orderId).Include(x=>x.Product);
+            var PaymentOrder = DBContext.PaymentOrders.FirstOrDefault(x => x.PaymentId == dataOne.PaymentOrderPaymentId);
+            var statusOrder = DBContext.OrderStatuses.FirstOrDefault(x => x.OrderStatusId == dataOne.OrderStatusId);
+            dataOne.OrderDetails = OrderDetail.ToArray();
+            dataOne.OrderStatus = statusOrder;
+            dataOne.PaymentOrder = PaymentOrder;
             try
             {
                 if(dataOne == null)
@@ -158,13 +164,14 @@ namespace FOLYFOOD.Services.order
                     statusCode = 401
                 };
             }
+            dataOne.OrderStatusId = statusId;
+            DBContext.Orders.Update(dataOne);
+            DBContext.SaveChanges();
             if (ValidateValue.IsValidEmail(dataOne.Email))
             {
                 SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne, "Cập nhật trạng thái đơn"), "foly food");
             }
-            dataOne.OrderStatusId = statusId;
-            DBContext.Orders.Update(dataOne);
-            DBContext.SaveChanges();
+           
             return new RetunObject<Order>()
             {
                 data = dataOne,
