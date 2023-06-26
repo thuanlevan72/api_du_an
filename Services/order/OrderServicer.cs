@@ -8,6 +8,7 @@ using FOLYFOOD.Hellers;
 using FOLYFOOD.Hellers.Mail;
 using FOLYFOOD.Hellers.validate;
 using FOLYFOOD.IService.IOrder;
+using FOLYFOOD.Services.product;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json.Linq;
@@ -18,10 +19,12 @@ namespace FOLYFOOD.Services.order
     public class OrderServicer : OrderInterface
     {
         public readonly Context DBContext;
+        public readonly ProductService productService;
 
         public OrderServicer()
         {
             DBContext = new Context();
+            productService = new ProductService();
         }
         public async Task<RetunObject<Order>> CreateNewOrder(OrderRequest order)
         {
@@ -86,6 +89,7 @@ namespace FOLYFOOD.Services.order
                     Quantity = detail.Quantity,
                     ProductId = detail.ProductId
                 };
+                await productService.updateQuantity(item.ProductId, item.Quantity);
                 listOrder.Add(item);
             }
             await DBContext.OrderDetails.AddRangeAsync(listOrder);

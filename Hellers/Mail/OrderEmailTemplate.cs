@@ -45,7 +45,8 @@ namespace FOLYFOOD.Hellers.Mail
             </head>
             <body>
                 <h1>Thông tin đơn hàng</h1>
-                <h2>{(string.IsNullOrEmpty(mess) ? "" : mess)}</h2>
+                <h2 style=""color: red; font-size: 20px; font-weight: bold;"">{(string.IsNullOrEmpty(mess) ? "" : mess)}</h2>
+
                 <table>
                     <tr>
                         <th>Mã đơn hàng</th>

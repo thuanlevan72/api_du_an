@@ -2,7 +2,7 @@
 
 namespace FOLYFOOD.Entitys
 {
-    public class Context: DbContext
+    public class Context : DbContext
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Decentralization> Decentralizations { get; set; }
@@ -41,194 +41,196 @@ namespace FOLYFOOD.Entitys
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure default value for CreatedAt and UpdateAt to be the current UTC time of the database
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Account>()
-                .Property(a => a.CreatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
+            .Property(a => a.CreatedAt)
+            .HasDefaultValueSql("GETDATE()")
+            .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Account>()
                 .Property(a => a.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Account>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Decentralization>()
                 .Property(d => d.CreatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Decentralization>()
                 .Property(d => d.UpdateAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Decentralization>()
-               .Property(d => d.UpdateAt)
-               .ValueGeneratedOnUpdate();
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<User>()
-               .Property(d => d.CreatedAt)
-               .HasDefaultValue(DateTime.UtcNow);
+                .Property(u => u.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<User>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<User>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(u => u.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Staff>()
-               .Property(d => d.CreatedAt)
-               .HasDefaultValue(DateTime.UtcNow);
+                .Property(s => s.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Staff>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Staff>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(s => s.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ProductType>()
-               .Property(d => d.CreatedAt)
-               .HasDefaultValue(DateTime.UtcNow);
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<ProductType>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<ProductType>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Product>()
-              .Property(d => d.CreatedAt)
-              .HasDefaultValue(DateTime.UtcNow);
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Product>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Product>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ProductImage>()
-             .Property(d => d.CreatedAt)
-             .HasDefaultValue(DateTime.UtcNow);
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<ProductImage>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<ProductImage>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ProductReview>()
-             .Property(d => d.CreatedAt)
-             .HasDefaultValue(DateTime.UtcNow);
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<ProductReview>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<ProductReview>()
-                .Property(d => d.UpdatedAt)
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ReservationDetailsService>()
-            .Property(d => d.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow);
+                .Property(r => r.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<ReservationDetailsService>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<ReservationDetailsService>()
-                .Property(d => d.UpdatedAt)
+                .Property(r => r.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Booking>()
-            .Property(d => d.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow);
+                .Property(b => b.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Booking>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Booking>()
-                .Property(d => d.UpdatedAt)
+                .Property(b => b.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Payment>()
-            .Property(d => d.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow);
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Payment>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Payment>()
-                .Property(d => d.UpdatedAt)
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Contact>()
-            .Property(d => d.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow);
+                .Property(c => c.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Contact>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Contact>()
-                .Property(d => d.UpdatedAt)
+                .Property(c => c.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Info>()
-            .Property(d => d.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow);
+                .Property(i => i.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Info>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Info>()
-                .Property(d => d.UpdatedAt)
+                .Property(i => i.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Slides>()
-            .Property(d => d.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow);
+                .Property(s => s.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Slides>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Slides>()
-                .Property(d => d.UpdatedAt)
+                .Property(s => s.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<ImagePage>()
-            .Property(d => d.CreatedAt)
-            .HasDefaultValue(DateTime.UtcNow);
+                .Property(i => i.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<ImagePage>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<ImagePage>()
-                .Property(d => d.UpdatedAt)
+                .Property(i => i.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<PaymentOrder>()
-               .Property(d => d.CreatedAt)
-               .HasDefaultValue(DateTime.UtcNow);
+                .Property(p => p.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<PaymentOrder>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<PaymentOrder>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(p => p.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Order>()
-             .Property(d => d.CreatedAt)
-             .HasDefaultValue(DateTime.UtcNow);
+                .Property(o => o.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Order>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Order>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(o => o.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
 
             modelBuilder.Entity<Voucher>()
-              .Property(d => d.CreatedAt)
-              .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Voucher>()
-                .Property(d => d.UpdatedAt)
-                .HasDefaultValue(DateTime.UtcNow);
-            modelBuilder.Entity<Voucher>()
-               .Property(d => d.UpdatedAt)
-               .ValueGeneratedOnUpdate();
+                .Property(v => v.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
 
-        }   
+            modelBuilder.Entity<Voucher>()
+                .Property(v => v.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
+        }
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=DESKTOP-NTJ1ROJ; Database=test; integrated security=sspi;TrustServerCertificate=True");
+          //  optionsBuilder.UseSqlServer("Server=DESKTOP-NTJ1ROJ; Database=test; integrated security=sspi;TrustServerCertificate=True");
             optionsBuilder.UseSqlServer("Server=203.113.174.12\\MSSQLSERVER2019,1437; Database=polyfood; User Id=thuanlevan72; Password=@Anh123anh; TrustServerCertificate=True; MultipleActiveResultSets=True;");
-           //   optionsBuilder.UseSqlServer("Server=localhost,1437; Database=polyfood; User Id=thuanlevan72; Password=@Anh123anh; TrustServerCertificate=True; MultipleActiveResultSets=True;");
+             // optionsBuilder.UseSqlServer("Server=localhost,1437; Database=polyfood; User Id=thuanlevan72; Password=@Anh123anh; TrustServerCertificate=True; MultipleActiveResultSets=True;");
 
         }
     }

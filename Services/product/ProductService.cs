@@ -6,6 +6,7 @@ using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.IService.IProduct;
 using ImageProcessor.Processors;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace FOLYFOOD.Services.product
 {
@@ -22,7 +23,7 @@ namespace FOLYFOOD.Services.product
             ProductType checkTypeProduct = null;
             try
             {
-                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || string.IsNullOrEmpty(product.shortDescription) || string.IsNullOrEmpty(product.fullDescription)  || product.AvartarImageProduct == null || product.Quantity < 0)
+                if (!product.ProductTypeId.HasValue || product.Price == null || product.Discount == null || product.Status == null || string.IsNullOrEmpty(product.NameProduct) || string.IsNullOrEmpty(product.shortDescription) || string.IsNullOrEmpty(product.fullDescription) || product.AvartarImageProduct == null || product.Quantity < 0)
                 {
                     throw new Exception("dữ liệu sản phẩm chuyền lên không đầy đủ");
                 }
@@ -35,11 +36,13 @@ namespace FOLYFOOD.Services.product
                 {
                     throw new Exception("loại sản phẩm thêm vào không tồn tại");
                 }
-                if(product.Price < 0) {
+                if (product.Price < 0)
+                {
                     throw new Exception("giá không được là số âm");
 
                 }
-                if(product.Discount < 0 || product.Discount > 100) {
+                if (product.Discount < 0 || product.Discount > 100)
+                {
                     throw new Exception("giảm giá là % không được âm hoặc lớn hơn 100");
                 }
 
@@ -83,8 +86,8 @@ namespace FOLYFOOD.Services.product
             Product checkProduct = null;
             try
             {
-               checkProduct =  await DBContext.Products.FirstOrDefaultAsync(x => x.ProductId == productId);
-                if(checkProduct == null)
+                checkProduct = await DBContext.Products.FirstOrDefaultAsync(x => x.ProductId == productId);
+                if (checkProduct == null)
                 {
                     throw new Exception("không tìm thấy sản phẩm cần tìm ");
                 }
@@ -100,10 +103,10 @@ namespace FOLYFOOD.Services.product
             }
             await uplloadFile.DeleteFile(checkProduct.AvartarImageProduct);
             var listImage = DBContext.ProductImages.Where(x => x.ProductId == productId).ToList();
-            if(listImage.Count > 0)
+            if (listImage.Count > 0)
             {
                 DBContext.ProductImages.RemoveRange(listImage);
-                await  DBContext.SaveChangesAsync();
+                await DBContext.SaveChangesAsync();
             }
             DBContext.Products.Remove(checkProduct);
             await DBContext.SaveChangesAsync();
@@ -181,7 +184,7 @@ namespace FOLYFOOD.Services.product
             {
                 data = data.Where(x => x.NameProduct.ToLower().Contains(search));
             }
-            if(priceFrom != null && priceTo != null)
+            if (priceFrom != null && priceTo != null)
             {
                 data = data.Where(x => x.Price >= priceFrom && x.Price <= priceTo);
             }
@@ -190,7 +193,7 @@ namespace FOLYFOOD.Services.product
                 product.ProductType.Products = null;
             }
 
-            return data.OrderByDescending(x=>x.number_of_views).ThenByDescending(x=>x.ProductId);
+            return data.OrderByDescending(x => x.number_of_views).ThenByDescending(x => x.ProductId);
         }
 
         public async Task<RetunObject<Product>> updateProduct(int productId, ProductDto product)
@@ -255,8 +258,8 @@ namespace FOLYFOOD.Services.product
             checkProduct.fullDescription = string.IsNullOrEmpty(product.fullDescription) ? checkProduct.fullDescription : product.fullDescription;
             checkProduct.shortDescription = string.IsNullOrEmpty(product.shortDescription) ? checkProduct.shortDescription : product.shortDescription;
             checkProduct.UpdatedAt = DateTime.Now;
-          DBContext.Products.Update(checkProduct);
-          await DBContext.SaveChangesAsync();
+            DBContext.Products.Update(checkProduct);
+            await DBContext.SaveChangesAsync();
             return new RetunObject<Product>()
             {
                 data = checkProduct,
@@ -300,14 +303,14 @@ namespace FOLYFOOD.Services.product
 
         public async Task<IQueryable<Product>> GetLimitProductSeal()
         {
-            var data = DBContext.Products.Include(x => x.ProductType).Where(x => x.Discount > 0).OrderByDescending(x=>x.CreatedAt).Take(8).AsQueryable();
+            var data = DBContext.Products.Include(x => x.ProductType).Where(x => x.Discount > 0).OrderByDescending(x => x.CreatedAt).Take(8).AsQueryable();
             return data;
         }
 
         public async Task<List<ProductResponse>> getAllProductFrontend()
         {
-            List<ProductResponse> dataRes  = new List<ProductResponse>();
-            var data = DBContext.Products.Include(x => x.ProductType).Include(x=>x.ProductImages).Where(x => x.Status == 1).OrderBy(x=>x.number_of_views).ThenBy(x=>x.ProductId).AsQueryable();
+            List<ProductResponse> dataRes = new List<ProductResponse>();
+            var data = DBContext.Products.Include(x => x.ProductType).Include(x => x.ProductImages).Where(x => x.Status == 1).OrderBy(x => x.number_of_views).ThenBy(x => x.ProductId).AsQueryable();
             foreach (var item in data)
             {
                 var dataOne = new ProductResponse();
@@ -326,7 +329,7 @@ namespace FOLYFOOD.Services.product
                 TimeSpan difference = currentDate - availableDate;
                 int daysDifference = difference.Days;
                 dataOne.id = item.ProductId.ToString();
-                dataOne.sku = item.ProductId.ToString() + "key" + new Random().Next(1,199);
+                dataOne.sku = item.ProductId.ToString() + "key" + new Random().Next(1, 199);
                 dataOne.price = item.Price;
                 dataOne.discount = item.Discount;
                 dataOne.rating = 5;
@@ -341,6 +344,26 @@ namespace FOLYFOOD.Services.product
 
             }
             return dataRes;
+        }
+
+        public async Task<bool> updateQuantity(int id, int quantity)
+        {
+            Product checkProduct = await DBContext.Products.SingleOrDefaultAsync(x => x.ProductId == id);
+            if (checkProduct == null)
+            {
+                return false;
+            }
+            if (quantity > checkProduct.Quantity)
+            {
+                checkProduct.Quantity = 0;
+            }
+            else
+            {
+                checkProduct.Quantity = checkProduct.Quantity - quantity;
+            }
+            DBContext.Products.Update(checkProduct);
+            DBContext.SaveChanges();
+            return true;
         }
     }
 }

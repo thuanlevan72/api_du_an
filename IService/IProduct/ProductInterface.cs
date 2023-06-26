@@ -22,5 +22,8 @@ namespace FOLYFOOD.IService.IProduct
 
         public Task<List<ProductResponse>> getAllProductFrontend();
 
+        public Task<Boolean> updateQuantity(int id, int quantity);
+            
+
     }
 }
