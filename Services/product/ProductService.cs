@@ -310,7 +310,7 @@ namespace FOLYFOOD.Services.product
         public async Task<List<ProductResponse>> getAllProductFrontend()
         {
             List<ProductResponse> dataRes = new List<ProductResponse>();
-            var data = DBContext.Products.Include(x => x.ProductType).Include(x => x.ProductImages).Where(x => x.Status == 1).OrderBy(x => x.number_of_views).ThenBy(x => x.ProductId).AsQueryable();
+            var data = DBContext.Products.Include(x => x.ProductType).Include(x => x.ProductImages).Where(x => x.Status == 1).OrderByDescending(x => x.number_of_views).ThenByDescending(x => x.ProductId).AsQueryable();
             foreach (var item in data)
             {
                 var dataOne = new ProductResponse();
