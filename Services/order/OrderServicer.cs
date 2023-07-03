@@ -217,34 +217,39 @@ namespace FOLYFOOD.Services.order
         }
 
         public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role) {
-            var order = DBContext.Orders.Include(x => x.User).SingleOrDefault(x => x.CodeOrder == code);
+            var dataOne = DBContext.Orders.FirstOrDefault(x => x.CodeOrder == code);
+            var OrderDetail = DBContext.OrderDetails.Where(x => x.OrderId == dataOne.OrderId).Include(x => x.Product);
+            var PaymentOrder = DBContext.PaymentOrders.FirstOrDefault(x => x.PaymentId == dataOne.PaymentOrderPaymentId);
+            var statusOrder = DBContext.OrderStatuses.FirstOrDefault(x => x.OrderStatusId == dataOne.OrderStatusId);
+            var user = DBContext.Users.FirstOrDefault(x => x.UserId == dataOne.UserId);
+            dataOne.OrderDetails = OrderDetail.ToArray();
+            dataOne.OrderStatus = statusOrder;
+            dataOne.PaymentOrder = PaymentOrder;
             try
             {
-                if(order == null)
+                if (dataOne == null)
                 {
                     throw new Exception("đơn hàng không tồn tại");
                 }
                 if (role != "admin")
                 {
-                    var user = order.User;
                     if (int.Parse(accountId) != user.AccountId)
                     {
                         throw new Exception("bạn không quyền hủy đơn hàng của người khác");
                     }
                 }
-                DateTime currentDate = DateTime.Today;
-                DateTime availableDate = order.CreatedAt;
+                DateTime currentDate = DateTime.Now;
+                DateTime availableDate = dataOne.CreatedAt;
 
                 TimeSpan difference = currentDate - availableDate;
-                int daysDifference = difference.Days;
+                int daysDifference = (int)difference.TotalDays;
                 if (daysDifference > 2)
                 {
-                    throw new Exception("đơn hàng của quý khách đã quá hạn để hủy");
+                    throw new Exception("Đơn hàng của quý khách đã quá hạn để hủy.");
                 }
-
-                if(order.OrderStatusId != 4)
+                if (statusOrder.OrderStatusId !=4)
                 {
-                    throw new Exception("đơn hàng đã đang quá trình giao không được hủy");
+                    throw new Exception("Đơn hàng của đã được sử lý rồi không được hủy.");
                 }
             }
             catch (Exception ex)
@@ -256,14 +261,18 @@ namespace FOLYFOOD.Services.order
                     statusCode = 401
                 };
             }
-            order.User = null;
-            order.OrderStatusId = 7;
-            DBContext.Orders.Update(order);
+            dataOne.OrderStatusId = 7;
+            DBContext.Orders.Update(dataOne);
             DBContext.SaveChanges();
+            if (ValidateValue.IsValidEmail(dataOne.Email))
+            {
+                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne, "Cập nhật trạng thái đơn"), "foly food");
+            }
+
             return new RetunObject<Order>()
             {
-                data = order,
-                mess = "đơn hàng đã bị hủy",
+                data = dataOne,
+                mess = "trạng thái đã được thay đổi",
                 statusCode = 201
             };
         }
@@ -276,6 +285,14 @@ namespace FOLYFOOD.Services.order
                 return null;
             }
            return dataOne;
+        }
+
+        public async Task<Boolean> IsUserPurchasedProduct(int userId, int productId)
+        {
+            bool isPurchased = DBContext.Orders
+                .Any(o => o.UserId == userId && o.OrderDetails.Any(od => od.ProductId == productId) && o.OrderStatusId == 5);
+
+            return isPurchased;
         }
     }
 }

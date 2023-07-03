@@ -27,6 +27,7 @@ namespace FOLYFOOD.Controllers.product
         }
         // GET: api/<ValuesController>
         [HttpGet, Authorize(Roles = "staff, admin")]
+     
         public async Task<IActionResult> Get(int page = 1, int pageSize = 10, String? search = "", Double? priceFrom = null, Double? priceTo = null)
         {
             search = search ?? "";
@@ -81,7 +82,6 @@ namespace FOLYFOOD.Controllers.product
             }
             return Ok(res);
         }
-
         // POST api/<ValuesController>
         [HttpPost, Authorize(Roles = "staff, admin")]
         public async Task<IActionResult> Post([FromForm] ProductDto value)

@@ -51,7 +51,7 @@ namespace POLYFOOD.Controllers
             userService = new UserService();
         }
 
-        [HttpPost("upload"), Authorize(Roles = "staff, admin")]
+        [HttpPost("upload")]
         public async Task<IActionResult> Upload(IFormFile file)
         {
 

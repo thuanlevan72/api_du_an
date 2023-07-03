@@ -7,6 +7,7 @@ using FOLYFOOD.Services.order;
 using FOLYFOOD.Services.typeProduct;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -157,6 +158,15 @@ namespace FOLYFOOD.Controllers.order
                 return NotFound(res);
             }
             return Ok(res);
+        }
+        [HttpGet("IsUserPurchasedProduct/{id}/{idProduct}")]
+        public async Task<IActionResult> IsUserPurchasedProduct(int id, int idProduct)
+        {
+            bool isPurchased = await orderServicer.IsUserPurchasedProduct(id, idProduct);
+            return Ok(new
+            {
+                isPurchased
+            });
         }
         [HttpPost("cancelOrder/{code}"), Authorize(Roles = "client, admin")]
         public async Task<IActionResult> cancelOrder(string code)

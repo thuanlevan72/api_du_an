@@ -3,6 +3,7 @@ using FOLYFOOD.Dto.ProductDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.IService.IProduct;
+using FOLYFOOD.Services.order;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
@@ -11,10 +12,11 @@ namespace FOLYFOOD.Services.product
     public class ProductReviewService : ProductReviewInterface
     {
         public readonly Context DBContext;
-
+        private protected OrderServicer orderServicer;
         public ProductReviewService()
         {
             DBContext = new Context();
+            orderServicer = new OrderServicer();
         }
 
         public async Task<RetunObject<ProductReview>> createReview(ProductReviewDto value)
@@ -23,9 +25,13 @@ namespace FOLYFOOD.Services.product
            Product product = await DBContext.Products.SingleOrDefaultAsync(x => x.ProductId == value.ProductId);
             try
             {
+              
                 if (value.ContentRated == "" || value.ProductId == null || value.UserId == null || value.PointEvaluation == null)
                 {
                     throw new Exception("Thông tin gửi lên không đầy đủ");
+                } 
+                if(await orderServicer.IsUserPurchasedProduct(value.UserId.Value, value.ProductId.Value)){
+                    throw new Exception("sản phẩm không được phép bình luận do bạn chưa mua và trải nghiệm.");
                 }
                 if (product == null) {
                     throw new Exception("sản phẩm đánh giá không tồn tại");

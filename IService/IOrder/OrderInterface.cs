@@ -13,7 +13,7 @@ namespace FOLYFOOD.IService.IOrder
         public Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role);
         public Task<IQueryable<Order>> GetOrderForEmail(string email, string accountId, string role);
         public Task<IQueryable<OrderDetail>> getDetail(int id);
-
+        public Task<Boolean> IsUserPurchasedProduct(int userId, int productId);
         public Task<IQueryable<Order>> getWaitingOrder();
 
         public Task<IQueryable<Order>> getOrdersAreBeingDelivered();
