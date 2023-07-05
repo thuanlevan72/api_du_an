@@ -188,3 +188,4 @@ D:\api_du_an\api\FOLYFOOD\obj\Debug\net6.0\refint\FOLYFOOD.dll
 D:\api_du_an\api\FOLYFOOD\obj\Debug\net6.0\FOLYFOOD.pdb
 D:\api_du_an\api\FOLYFOOD\obj\Debug\net6.0\FOLYFOOD.genruntimeconfig.cache
 D:\api_du_an\api\FOLYFOOD\obj\Debug\net6.0\ref\FOLYFOOD.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\libman.json

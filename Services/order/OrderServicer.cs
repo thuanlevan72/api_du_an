@@ -65,7 +65,7 @@ namespace FOLYFOOD.Services.order
             {
                 CodeOrder = Generate.GenerateOrderCode(),
                 OrderStatusId = order.OrderStatusId,
-                PaymentOrderPaymentId = 1,
+                PaymentOrderPaymentId = order.PaymentId,
                 Address = order.Address,
                 Email = order.Email,
                 noteOrder = !string.IsNullOrEmpty(order.noteOrder) ? order.noteOrder : "",
@@ -203,17 +203,18 @@ namespace FOLYFOOD.Services.order
             var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
             return res.OrderByDescending(x => x.CreatedAt);
         }
-        public async Task<IQueryable<Order>> GetOrderForEmail(string email,string accountId,string role)
-        {
+        public async Task<IQueryable<Order>> GetOrderForUserId(int id,string accountId,string role)
+        {  
+            var user  = DBContext.Accounts.Include(x=>x.User).AsNoTracking().SingleOrDefault(x=>x.AccountId == id);
             if(role != "admin")
             {
-                var user  = DBContext.Accounts.SingleOrDefault(x=>x.User.Email == email);
+              
                 if(int.Parse(accountId) != user.AccountId)
                 {
                     return null;
                 }
             }
-            return DBContext.Orders.Where(x=>x.Email == email).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x=>x.Product).OrderByDescending(x=>x.CreatedAt).AsNoTracking().AsQueryable();
+            return DBContext.Orders.Where(x=>x.UserId == user.User.UserId).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x=>x.Product).OrderByDescending(x=>x.CreatedAt).AsNoTracking().AsQueryable();
         }
 
         public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role) {

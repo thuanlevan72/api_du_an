@@ -29,10 +29,12 @@ namespace FOLYFOOD.Services.product
                 if (value.ContentRated == "" || value.ProductId == null || value.UserId == null || value.PointEvaluation == null)
                 {
                     throw new Exception("Thông tin gửi lên không đầy đủ");
-                } 
-                if(await orderServicer.IsUserPurchasedProduct(value.UserId.Value, value.ProductId.Value)){
-                    throw new Exception("sản phẩm không được phép bình luận do bạn chưa mua và trải nghiệm.");
                 }
+                //bool IsUserPurchasedProduct = await orderServicer.IsUserPurchasedProduct(value.UserId, value.ProductId.Value);
+                //if (!IsUserPurchasedProduct)
+                //{
+                //    throw new Exception("sản phẩm không được phép bình luận do bạn chưa mua và trải nghiệm.");
+                //}
                 if (product == null) {
                     throw new Exception("sản phẩm đánh giá không tồn tại");
                 }
@@ -111,7 +113,7 @@ namespace FOLYFOOD.Services.product
 
         public async Task<IQueryable<ProductReview>> getReviewForProduct(int productId)
         {
-            IQueryable<ProductReview> productReviews = DBContext.ProductReviews.AsNoTracking().Where(x => x.ProductId == productId && x.Status == 1).AsQueryable();
+            IQueryable<ProductReview> productReviews = DBContext.ProductReviews.Include(x=>x.User).ThenInclude(x=>x.Account).Where(x => x.ProductId == productId && x.Status == 1).OrderByDescending(x=>x.ProductReviewId).AsNoTracking().AsQueryable();
             return productReviews;
 
         }

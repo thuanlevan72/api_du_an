@@ -28,7 +28,7 @@ namespace FOLYFOOD.Hellers
                 {
                     File = new FileDescription(file.FileName, stream),
                     PublicId = "xyz-abc" + "_" + DateTime.Now.Ticks + "image" ,// ID công khai tùy ý cho file phải tuyệt đối là không được giống nhau
-                    Transformation = new Transformation().Width(300).Height(300).Crop("fill") // Cố định kích thước ảnh thành 300x300 pixel
+                     Transformation = new Transformation().Width(400).Height(400).Crop("fill") // Cố định kích thước ảnh thành tỷ lệ 3*4 pixel
                 };
 
                 var uploadResult = await uplloadFile._cloudinary.UploadAsync(uploadParams);
