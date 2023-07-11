@@ -160,11 +160,18 @@ namespace FOLYFOOD.Controllers.order
             return Ok(test);
         }
         [HttpGet("getDetailForEmail/{id}"), Authorize(Roles = "client, admin")]
-        public async Task<IActionResult> GetOrderEmail(int id)
+        public async Task<IActionResult> GetOrderEmail(int id,[FromQuery] int page = 1,[FromQuery] int pageSize = 6)
         {
             (string accountId, string role) = GetTokenInfo();
             var data = await orderServicer.GetOrderForUserId(id, accountId, role);
-            return Ok(data);
+            var res = PaginationHelper.GetPagedData(data, page, pageSize);
+            RetunObject<PagedResult<Order>> test = new RetunObject<PagedResult<Order>>()
+            {
+                data = res,
+                mess = res.Data.Count() > 0 ? "đã lấy được dữ liệu" : "không có data",
+                statusCode = 200,
+            };
+            return Ok(test);
         }
         [HttpGet("getDetail/{id}"), Authorize(Roles = "admin")]
         public async Task<IActionResult> getDetail(int id)

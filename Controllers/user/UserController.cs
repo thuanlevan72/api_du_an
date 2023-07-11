@@ -1,4 +1,5 @@
-﻿using FOLYFOOD.Dto;
+﻿using CloudinaryDotNet.Actions;
+using FOLYFOOD.Dto;
 using FOLYFOOD.Dto.UserDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.imageChecks;
@@ -28,9 +29,10 @@ namespace FOLYFOOD.Controllers.user
         
 
         [HttpGet, Authorize(Roles = "staff, admin")]
-        public async Task<IActionResult> Get(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Get(int? roleId, int page = 1, int pageSize = 10,string? searchName = "")
         {
-            var accounts = await userService.getListUser();
+            searchName = searchName ?? "";
+            var accounts = await userService.getListUser(searchName, roleId);
             var res = PaginationHelper.GetPagedData(accounts, page, pageSize);
             RetunObject<PagedResult<Account>> test  =new RetunObject<PagedResult<Account>>()
             {

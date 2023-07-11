@@ -58,10 +58,14 @@ namespace FOLYFOOD.Services
             };
         }
 
-        public async Task<IQueryable<Account>> getListUser()
+        public async Task<IQueryable<Account>> getListUser(string search,int? roleId)
         {
             // lấy dữ liệu user nha 
-            var listUser = DbContext.Accounts.AsNoTracking().Include(x => x.User).Include(x=>x.Decentralization).OrderByDescending(x=>x.AccountId);
+            var listUser = DbContext.Accounts.AsNoTracking().Include(x => x.User).Include(x=>x.Decentralization).OrderByDescending(x=>x.AccountId).Where(x=>x.UserName.ToLower().Contains(search.ToLower()));
+            if (roleId.HasValue)
+            {
+                listUser = listUser.Where(x => x.DecentralizationId == roleId).AsNoTracking().AsQueryable();
+            }
             return listUser;
         }
 

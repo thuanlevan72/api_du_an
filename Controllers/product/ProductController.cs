@@ -28,7 +28,7 @@ namespace FOLYFOOD.Controllers.product
         // GET: api/<ValuesController>
         [HttpGet, Authorize(Roles = "staff, admin")]
      
-        public async Task<IActionResult> Get(int page = 1, int pageSize = 10, String? search = "", Double? priceFrom = null, Double? priceTo = null)
+        public async Task<IActionResult> Get(int? ProductTypeId, int page = 1, int pageSize = 10, String? search = "", Double? priceFrom = null, Double? priceTo = null)
         {
             search = search ?? "";
             priceFrom = priceFrom == 0 ? Double.MinValue : priceFrom;
@@ -40,7 +40,7 @@ namespace FOLYFOOD.Controllers.product
                 priceFrom = permutation;
             }
 
-            IQueryable<Product> data = await productService.getProducts(search, priceFrom, priceTo);
+            IQueryable<Product> data = await productService.getProducts(ProductTypeId, search, priceFrom, priceTo);
             var res = PaginationHelper.GetPagedData<Product>(data, page, pageSize);
             RetunObject<PagedResult<Product>> dataProduct = new RetunObject<PagedResult<Product>>()
             {

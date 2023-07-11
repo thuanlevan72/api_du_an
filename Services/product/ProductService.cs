@@ -177,7 +177,7 @@ namespace FOLYFOOD.Services.product
                 statusCode = 200
             };
         }
-        public async Task<IQueryable<Product>> getProducts(String? search = "", Double? priceFrom = 0, Double? priceTo = 0)
+        public async Task<IQueryable<Product>> getProducts(int? ProductTypeId, String? search = "", Double? priceFrom = 0, Double? priceTo = 0)
         {
             var data = DBContext.Products.Include(x => x.ProductType).AsQueryable();
             if (!string.IsNullOrEmpty(search))
@@ -187,6 +187,10 @@ namespace FOLYFOOD.Services.product
             if (priceFrom != null && priceTo != null)
             {
                 data = data.Where(x => x.Price >= priceFrom && x.Price <= priceTo);
+            }
+            if (ProductTypeId.HasValue)
+            {
+                data =data.Where(x=>x.ProductTypeId == ProductTypeId.Value);
             }
             foreach (var product in data)
             {
