@@ -31,7 +31,12 @@ namespace FOLYFOOD.Controllers.statistics
         [HttpGet("CalculateOrderStatusData"), Authorize(Roles = "admin")]
         public IActionResult GetCalculateOrderStatusData(DateTime? startDate = null, DateTime? endDate = null)
         {
-            return Ok(statisticsService.CalculateOrderStatusData());
+            return Ok(statisticsService.CalculateOrderStatusData(startDate, endDate));
+        }
+        [HttpGet("StatisticsData"), Authorize(Roles = "admin")]
+        public IActionResult GetStatisticsData()
+        {
+            return Ok(statisticsService.GetStatisticsData());
         }
     }
 }

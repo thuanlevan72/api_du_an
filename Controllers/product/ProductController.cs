@@ -58,7 +58,7 @@ namespace FOLYFOOD.Controllers.product
         [HttpGet("getallproductfrontend")]
         public async Task<IActionResult> getAllProductFrontend()
         {
-            return Ok(await productService.getAllProductFrontend());
+            return Ok(await productService.GetAllProductFrontend());
         }
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]

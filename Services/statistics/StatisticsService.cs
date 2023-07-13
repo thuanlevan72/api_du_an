@@ -124,21 +124,31 @@ namespace FOLYFOOD.Services.statistics
                 int orderCount = DBContext.Orders.Count(o => o.OrderStatusId == orderStatus.OrderStatusId &&
                                                             o.CreatedAt >= startDate && o.CreatedAt <= endDate);
 
-                OrderStatusData orderStatusData = new OrderStatusData()
+                if (orderCount > 0)
                 {
-                    OrderStatus = orderStatus.Name,
-                    OrderCount = orderCount
-                };
+                    OrderStatusData orderStatusData = new OrderStatusData()
+                    {
+                        OrderStatus = orderStatus.Name,
+                        OrderCount = orderCount
+                    };
 
-                orderStatusDataList.Add(orderStatusData);
+                    orderStatusDataList.Add(orderStatusData);
+                }
             }
 
             // Tính tỷ lệ phần trăm đơn hàng cho mỗi trạng thái
             int totalOrderCount = orderStatusDataList.Sum(o => o.OrderCount);
             foreach (var item in orderStatusDataList)
             {
-                double ratio = (double)item.OrderCount / totalOrderCount * 100;
-                item.Ratio = ratio;
+                if (totalOrderCount > 0)
+                {
+                    double ratio = (double)item.OrderCount / totalOrderCount * 100;
+                    item.Ratio = ratio;
+                }
+                else
+                {
+                    item.Ratio = 0; // Gán tỷ lệ là 0 khi totalOrderCount = 0
+                }
             }
 
             return orderStatusDataList;
@@ -146,6 +156,16 @@ namespace FOLYFOOD.Services.statistics
 
 
 
+        public StatisticsData GetStatisticsData()
+        {
+            var data = new StatisticsData();
+            data.OrderCount = DBContext.Orders.Count(x=>x.OrderStatusId != 7);
+            data.UserCount = DBContext.Accounts.Count(x => x.DecentralizationId == 3);
+            data.ProductCount = DBContext.Products.Count();
+            data.Revenue = DBContext.Orders
+                    .Where(x => x.OrderStatusId == 5).Sum(x=>x.actualPrice);
+            return data;
+        }
 
 
 

@@ -10,7 +10,7 @@ namespace FOLYFOOD.Hellers.Mail
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("thuanlevan72@gmail.com", "ufakyokzznfukrtk"),
+                Credentials = new NetworkCredential("thuanlevan72@gmail.com", "qbqefnmnrbrlmmqn"),
                 EnableSsl = true
             };
 

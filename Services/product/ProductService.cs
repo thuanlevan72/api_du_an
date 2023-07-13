@@ -4,9 +4,7 @@ using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
 using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.IService.IProduct;
-using ImageProcessor.Processors;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace FOLYFOOD.Services.product
 {
@@ -190,7 +188,7 @@ namespace FOLYFOOD.Services.product
             }
             if (ProductTypeId.HasValue)
             {
-                data =data.Where(x=>x.ProductTypeId == ProductTypeId.Value);
+                data = data.Where(x => x.ProductTypeId == ProductTypeId.Value);
             }
             foreach (var product in data)
             {
@@ -311,15 +309,28 @@ namespace FOLYFOOD.Services.product
             return data;
         }
 
-        public async Task<List<ProductResponse>> getAllProductFrontend()
+        public async Task<List<ProductResponse>> GetAllProductFrontend()
         {
             List<ProductResponse> dataRes = new List<ProductResponse>();
-            var data = DBContext.Products.Include(x => x.ProductType).Include(x => x.ProductImages).Where(x => x.Status == 1).OrderByDescending(x => x.number_of_views).ThenByDescending(x => x.ProductId).AsQueryable();
+
+            var data = DBContext.Products
+                .Include(x => x.ProductType)
+                .Include(x => x.ProductImages)
+                .Where(x => x.Status == 1)
+                .OrderByDescending(x => x.number_of_views)
+                .ThenByDescending(x => x.ProductId)
+                .ToList(); // Sử dụng ToList() thay vì AsQueryable()
+
+            var productReviewData = DBContext.ProductReviews
+                .Where(pr => data.Select(p => p.ProductId).Contains(pr.ProductId))
+                .ToList(); // Lấy dữ liệu đánh giá sản phẩm trong một truy vấn duy nhất
+
             foreach (var item in data)
             {
                 var dataOne = new ProductResponse();
                 dataOne.tag.Add(item.ProductType.NameProductType.ToString());
                 dataOne.image.Add(item.AvartarImageProduct);
+
                 if (item.ProductImages.Count > 0)
                 {
                     foreach (var image in item.ProductImages)
@@ -327,6 +338,7 @@ namespace FOLYFOOD.Services.product
                         dataOne.image.Add(image.ImageProduct);
                     }
                 }
+
                 DateTime currentDate = DateTime.Today;
                 DateTime availableDate = item.CreatedAt;
 
@@ -336,7 +348,15 @@ namespace FOLYFOOD.Services.product
                 dataOne.sku = item.ProductId.ToString() + "key" + new Random().Next(1, 199);
                 dataOne.price = item.Price;
                 dataOne.discount = item.Discount;
-                dataOne.rating = 5;
+
+                var productReview = productReviewData.Where(pr => pr.ProductId == item.ProductId).ToList();
+                dataOne.rating = 0;
+                if (productReview.Count >  0)
+                {
+                        dataOne.rating = (int)(productReview.Average(x=>x.PointEvaluation)); // Sử dụng dữ liệu đánh giá sản phẩm đã lấy
+                }
+                
+
                 dataOne.stock = item.Quantity;
                 dataOne.name = item.NameProduct;
                 dataOne.saleCount = item.Quantity;
@@ -345,10 +365,11 @@ namespace FOLYFOOD.Services.product
                 dataOne.fullDescription = string.IsNullOrEmpty(item.fullDescription) ? "dữ liệu chưa được cập nhật" : item.fullDescription;
                 dataOne.shortDescription = string.IsNullOrEmpty(item.shortDescription) ? "dữ liệu chưa được cập nhật" : item.shortDescription;
                 dataRes.Add(dataOne);
-
             }
+
             return dataRes;
         }
+
 
         public async Task<bool> updateQuantity(int id, int quantity)
         {
