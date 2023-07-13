@@ -355,8 +355,6 @@ namespace FOLYFOOD.Services.product
                 {
                         dataOne.rating = (int)(productReview.Average(x=>x.PointEvaluation)); // Sử dụng dữ liệu đánh giá sản phẩm đã lấy
                 }
-                
-
                 dataOne.stock = item.Quantity;
                 dataOne.name = item.NameProduct;
                 dataOne.saleCount = item.Quantity;
