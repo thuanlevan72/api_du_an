@@ -4,13 +4,16 @@ namespace FOLYFOOD.Hellers.Mail
 {
     public class SendMail
     {
-        public static string send(string mailTo, string htmlTemplate, string Subject = "")
+        public static string send(string mailTo, string htmlTemplate, string Subject = "",bool check = false)
         {
             // Cấu hình thông tin máy chủ SMTP
+            string appPass = check ? "igyxznfpyzxngdyg" : "qbqefnmnrbrlmmqn";
+            string mailAddress = check ? "notification.ltsedu@gmail.com" : "thuanlevan72@gmail.com";
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {
+              
                 Port = 587,
-                Credentials = new NetworkCredential("thuanlevan72@gmail.com", "qbqefnmnrbrlmmqn"),
+                Credentials = new NetworkCredential(mailAddress, appPass),
                 EnableSsl = true
             };
 
@@ -18,7 +21,7 @@ namespace FOLYFOOD.Hellers.Mail
             {
                 // Tạo đối tượng MailMessage
                 var message = new MailMessage();
-                message.From = new MailAddress("thuanlevan72@gmail.com");
+                message.From = new MailAddress(mailAddress);
                 message.To.Add(mailTo);
                 message.Subject = Subject;
                 message.Body = htmlTemplate;

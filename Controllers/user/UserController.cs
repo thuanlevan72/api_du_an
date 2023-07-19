@@ -47,10 +47,10 @@ namespace FOLYFOOD.Controllers.user
             };
             return Ok(test);
         }
-        [HttpGet("/sendMail"), Authorize(Roles = "staff, admin")]
-        public async Task<IActionResult> sendMail(string mailTo, string Subject)
+        [HttpPost("sendMail")]
+        public async Task<IActionResult> sendMail(MailPointRequest mailPointRequest)
         {
-          string str = SendMail.send(mailTo, Template1.temlapteHtmlMail(), Subject);
+          string str = SendMail.send(mailPointRequest.Email, CourseNotificationEmailTheme.ThemeSendMail(mailPointRequest), "LTS EDU - THÔNG BÁO ĐIỂM HỌC PHẦN",true);
            return Ok(str);
         }
         [HttpPost("check-token")]
@@ -108,7 +108,7 @@ namespace FOLYFOOD.Controllers.user
 
             return Ok(user);
         }
-        [HttpGet("change-status/{id}"), Authorize("admin")]
+        [HttpGet("change-status/{id}"), Authorize(Roles ="admin")]
         public async Task<IActionResult> ChangeStatus(int id)
         {
             var user = await userService.changeStatus(id);
