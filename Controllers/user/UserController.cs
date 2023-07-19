@@ -2,12 +2,15 @@
 using FOLYFOOD.Dto;
 using FOLYFOOD.Dto.UserDto;
 using FOLYFOOD.Entitys;
+using FOLYFOOD.Hellers;
 using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.Hellers.Mail;
 using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.Services;
+using BCryptNet = BCrypt.Net.BCrypt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -21,10 +24,12 @@ namespace FOLYFOOD.Controllers.user
     public class UserController : ControllerBase
     {
         private readonly UserService userService;
-        
+        private readonly Context _dbContext;
+
         public UserController()
         {
             userService = new UserService();
+            _dbContext = new Context();
         }
         
 
@@ -48,6 +53,49 @@ namespace FOLYFOOD.Controllers.user
           string str = SendMail.send(mailTo, Template1.temlapteHtmlMail(), Subject);
            return Ok(str);
         }
+        [HttpPost("check-token")]
+        public async Task<IActionResult> CheckToken(string token)
+        {
+   
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            DateTime vietnamTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
+            // Kiểm tra mã token và kiểm tra thời gian hết hạn
+            var user = await _dbContext.Accounts.SingleOrDefaultAsync(x => x.ResetPasswordToken == token && x.ResetPasswordTokenExpiry > vietnamTime);
+            if (user == null || token == "null")
+            {
+                return BadRequest("Invalid or expired reset token");
+            }
+            if (user.ResetPasswordToken == "null")
+            {
+                return BadRequest("Invalid or expired reset token");
+            }
+            return Ok("Token hợp lệ");
+        }
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest model)
+        {
+            string resetPasswordToken = model.ResetPasswordToken;
+            string newPassword = model.NewPassword;
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            DateTime vietnamTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
+            // Kiểm tra mã token và kiểm tra thời gian hết hạn
+            var user = await _dbContext.Accounts.SingleOrDefaultAsync(x => x.ResetPasswordToken == resetPasswordToken && x.ResetPasswordTokenExpiry > vietnamTime);
+            if (user == null || model.ResetPasswordToken == "null")
+            {
+                return BadRequest("Invalid or expired reset password token");
+            }
+            if(user.ResetPasswordToken == "null")
+            {
+                return BadRequest("Invalid or expired reset password token");
+            }
+            // Cập nhật mật khẩu mới cho người dùng
+            user.Password = BCryptNet.HashPassword(model.NewPassword); // Hãy sử dụng thuật toán băm mật khẩu phù hợp
+            user.ResetPasswordToken = "null";
+            user.ResetPasswordTokenExpiry = vietnamTime.AddHours(-1000);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Password reset successful");
+        }
         // GET api/<UserController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -59,6 +107,40 @@ namespace FOLYFOOD.Controllers.user
             }
 
             return Ok(user);
+        }
+        [HttpGet("change-status/{id}"), Authorize("admin")]
+        public async Task<IActionResult> ChangeStatus(int id)
+        {
+            var user = await userService.changeStatus(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest model)
+        {
+            var user = await _dbContext.Accounts.SingleOrDefaultAsync(x => x.Email == model.Email);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+            // Lấy múi giờ của Việt Nam
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+            DateTime vietnamTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
+
+            // Thêm 1 giờ vào múi giờ của Việt Nam
+            DateTime resetPasswordTokenExpiry = vietnamTime.AddHours(1);
+            // Tạo và lưu trữ mã đặt lại mật khẩu
+            user.ResetPasswordToken = GenerateResetPasswordToken.GenerateResetPassToken();
+            user.ResetPasswordTokenExpiry = resetPasswordTokenExpiry;
+            await _dbContext.SaveChangesAsync();
+
+            // Gửi email chứa liên kết đặt lại mật khẩu đến người dùng
+            SendMail.send(user.Email,TemplateResetPasswordEmail.temlapteHtmlMail(user.ResetPasswordToken), "Đặt lại mật khẩu ứng dụng");
+
+            return Ok("Reset password email sent");
         }
 
         // POST api/<UserController>

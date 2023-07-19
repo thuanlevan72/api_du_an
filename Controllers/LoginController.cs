@@ -113,10 +113,14 @@ namespace POLYFOOD.Controllers
             var loginResponse = new LoginResponse { };
             //loginService.checkLogin(login.UserName, login.Password);
             var data = SecurityUser.checkLogin(login.email, login.Password);
-
+         
             // if credentials are valid
             if (data != null)
             {
+                if (data.Status != 1)
+                {
+                    return BadRequest("Tài khoảng đã bị khóa!");
+                }
                 string token = CreateToken(data.UserName, data.AccountId, data.Decentralization.AuthorityName.ToLower());
 
                 loginResponse.Token = token;

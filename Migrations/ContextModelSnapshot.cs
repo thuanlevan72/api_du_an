@@ -56,6 +56,15 @@ namespace FOLYFOOD.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("password");
 
+                    b.Property<string>("ResetPasswordToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ResetPasswordToken");
+
+                    b.Property<DateTime?>("ResetPasswordTokenExpiry")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ResetPasswordTokenExpiry");
+
                     b.Property<int>("Status")
                         .HasColumnType("int")
                         .HasColumnName("status");

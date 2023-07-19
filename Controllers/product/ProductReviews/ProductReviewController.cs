@@ -52,9 +52,14 @@ namespace FOLYFOOD.Controllers.product.ProductReviews
         }
         // GET api/<ProductReviewController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            RetunObject<ProductReview> res = await productReviewService.getDetailProductReview(id);
+            if (res.errorOccurred)
+            {
+                return NotFound(res);
+            }
+            return Ok(res);
         }
 
         // POST api/<ProductReviewController>
@@ -87,8 +92,14 @@ namespace FOLYFOOD.Controllers.product.ProductReviews
 
         // DELETE api/<ProductReviewController>/5
         [HttpGet("delete/{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            RetunObject<ProductReview> res = await productReviewService.deleteReview(id);
+            if (res.errorOccurred)
+            {
+                return NotFound(res);
+            }
+            return Ok(res);
         }
     }
 }

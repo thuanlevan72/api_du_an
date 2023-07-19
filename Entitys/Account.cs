@@ -29,6 +29,12 @@ namespace FOLYFOOD.Entitys
         [Column("decentralization_id")]
         public int DecentralizationId { get; set; }
 
+        [Column("ResetPasswordToken")]
+        public string ResetPasswordToken { get; set; }
+
+        [Column("ResetPasswordTokenExpiry")]
+        public DateTime? ResetPasswordTokenExpiry { get; set; }
+
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }
 

@@ -160,10 +160,10 @@ namespace FOLYFOOD.Controllers.order
             return Ok(test);
         }
         [HttpGet("getDetailForEmail/{id}"), Authorize(Roles = "client, admin")]
-        public async Task<IActionResult> GetOrderEmail(int id,[FromQuery] int page = 1,[FromQuery] int pageSize = 6)
+        public async Task<IActionResult> GetOrderEmail(int id,string? searchCode,[FromQuery] int page = 1,[FromQuery] int pageSize = 6)
         {
             (string accountId, string role) = GetTokenInfo();
-            var data = await orderServicer.GetOrderForUserId(id, accountId, role);
+            var data = await orderServicer.GetOrderForUserId(id, accountId, role, searchCode);
             var res = PaginationHelper.GetPagedData(data, page, pageSize);
             RetunObject<PagedResult<Order>> test = new RetunObject<PagedResult<Order>>()
             {

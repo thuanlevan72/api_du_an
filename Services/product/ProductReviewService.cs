@@ -83,7 +83,6 @@ namespace FOLYFOOD.Services.product
                 {
                     throw new Exception("Thông tin đánh giá không tồn tại");
                 }
-
             }
             catch (Exception ex)
             {
@@ -91,11 +90,11 @@ namespace FOLYFOOD.Services.product
                 {
                     data = null,
                     mess = ex.Message,
-                    statusCode = 401
+                    statusCode = 404
                 };
             }
             DBContext.Remove(productReview);
-            DBContext.SaveChanges();
+            DBContext.SaveChangesAsync();
 
             return new RetunObject<ProductReview>()
             {
@@ -157,6 +156,58 @@ namespace FOLYFOOD.Services.product
         public Task<RetunObject<ProductReview>> updateReview(ProductReviewDto value)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<RetunObject<ProductReview>> updateReviewStatus(int idProductReview)
+        {
+            ProductReview productReview = await DBContext.ProductReviews.SingleOrDefaultAsync(x => x.ProductReviewId == idProductReview);
+            try
+            {
+                if (productReview == null)
+                {
+                    throw new Exception("Thông tin đánh giá không tồn tại");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new RetunObject<ProductReview>()
+                {
+                    data = null,
+                    mess = ex.Message,
+                    statusCode = 401
+                };
+            }
+ 
+            throw new NotImplementedException();
+        }
+        public async Task<RetunObject<ProductReview>> getDetailProductReview(int productReviewId)
+        {
+            ProductReview productReview = await DBContext.ProductReviews.Include(x=>x.Product).Include(x=>x.User).AsNoTracking().SingleOrDefaultAsync(x => x.ProductReviewId == productReviewId);
+            try
+            {
+                if (productReview == null)
+                {
+                    throw new Exception("Thông tin đánh giá không tồn tại");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new RetunObject<ProductReview>()
+                {
+                    data = null,
+                    mess = ex.Message,
+                    statusCode = 404
+                };
+            }
+            return new RetunObject<ProductReview>()
+            {
+                data = productReview,
+                mess = "đã lấy được dữ liệu thành công",
+                statusCode = 200
+            };
+
         }
     }
 }

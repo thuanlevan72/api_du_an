@@ -11,6 +11,7 @@ using FOLYFOOD.IService.IOrder;
 using FOLYFOOD.Services.product;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using System.Data;
 
@@ -203,7 +204,7 @@ namespace FOLYFOOD.Services.order
             var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
             return res.OrderByDescending(x => x.CreatedAt);
         }
-        public async Task<IQueryable<Order>> GetOrderForUserId(int id,string accountId,string role)
+        public async Task<IQueryable<Order>> GetOrderForUserId(int id,string accountId,string role,string? searchCode)
         {  
             var user  = DBContext.Accounts.Include(x=>x.User).AsNoTracking().SingleOrDefault(x=>x.AccountId == id);
             if(role != "admin")
@@ -214,7 +215,12 @@ namespace FOLYFOOD.Services.order
                     return null;
                 }
             }
-            return DBContext.Orders.Where(x=>x.UserId == user.User.UserId).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x=>x.Product).OrderByDescending(x=>x.CreatedAt).AsNoTracking().AsQueryable();
+            var resOrder = DBContext.Orders.Where(x => x.UserId == user.User.UserId).Include(x => x.OrderStatus).Include(x => x.PaymentOrder).Include(x => x.OrderDetails).ThenInclude(x => x.Product).OrderByDescending(x => x.CreatedAt).AsNoTracking().AsQueryable();
+            if (!searchCode.IsNullOrEmpty())
+            {
+                resOrder = resOrder.Where(x=>x.CodeOrder == searchCode).AsNoTracking().AsQueryable();
+            }
+            return resOrder;
         }
 
         public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role) {

@@ -79,9 +79,14 @@ namespace FOLYFOOD.Controllers.info
         }
         // DELETE api/<InfoController>/5
         [HttpGet("delete/{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-
+            RetunObject<Info> res = await infoServicer.deleteInfo(id);
+            if (res.errorOccurred)
+            {
+                return NotFound(res);
+            }
+            return Ok(res);
         }
     }
 }

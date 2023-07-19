@@ -71,15 +71,39 @@ namespace FOLYFOOD.Services
 
         public async Task<Account> getOneUser(int id)
         {
-            var user = await DbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == id);
-
-            if (user == null || user.DecentralizationId != 3)
-            {
-                return null;
-            }
+            var user = await DbContext.Accounts.Include(x=>x.User).FirstOrDefaultAsync(x => x.AccountId == id);
             return user;
         }
+        public async Task<RetunObject<Account>> changeStatus(int id)
+        {
+            Account userUpdate = await DbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == id);
+            try
+            {
+                if (userUpdate == null)
+                {
+                    throw new Exception("thông tin người dùng không tồn tại");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new RetunObject<Account>
+                {
+                    data = null,
+                    mess = ex.Message,
+                    statusCode = 400,
+                };
 
+            }
+            userUpdate.Status = userUpdate.Status == 1 ? 0 : 1;
+            DbContext.Accounts.Update(userUpdate);
+            await DbContext.SaveChangesAsync();
+            return new RetunObject<Account>
+            {
+                data = userUpdate,
+                mess = "đã thay đổi thành công trạng thái",
+                statusCode = 200,
+            };
+        }
         public async Task<Account> Register(RegisterRequets data)
         {
             if (data.UserName == "" || data.DecentralizationId == null || data.Password == "" || data.Status == null)

@@ -11,7 +11,7 @@ namespace FOLYFOOD.IService.IOrder
         public Task<IQueryable<Order>> GetAllOrders();
         public Task<RetunObject<Order>> getOrderForCodeOrder(string code);
         public Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role);
-        public Task<IQueryable<Order>> GetOrderForUserId(int id, string accountId, string role);
+        public Task<IQueryable<Order>> GetOrderForUserId(int id, string accountId, string role,string? searchCode);
         public Task<IQueryable<OrderDetail>> getDetail(int id);
         public Task<Boolean> IsUserPurchasedProduct(int userId, int productId);
         public Task<IQueryable<Order>> getWaitingOrder();
