@@ -20,6 +20,7 @@ namespace FOLYFOOD.Hellers.Mail
     .body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
+  background-image: url(""https://wallpaperaccess.com/full/1097489.jpg"");
       margin: 0;
       padding: 0;
     }
@@ -78,13 +79,13 @@ namespace FOLYFOOD.Hellers.Mail
                 emailContent += @"
       <tr>
         <td><strong>" + course.Name + @"</strong></td>
-        <td>" + course.Point + @"đ</td>
+        <td>" + course.Point + " " + @"đ</td>
       </tr>";
             }
 
-            emailContent += @"
+            emailContent += $@"
     </table>
-    <h5>Kết quả học phần của bạn đã đạt tiêu chuẩn. Hãy tiếp tục giữ vững tinh thần và kết quả tốt trong học phần tiếp theo!</h4>
+    <h5>{mailPointRequest.TotalRating}</h4>
     <div class=""footer"">
       <p>Trân trọng,</p>
       <p>LTS EDU</p>

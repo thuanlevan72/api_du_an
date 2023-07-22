@@ -11,7 +11,10 @@
         public DateTime DayEndEstimatedEndDate { get; set; }
         public string TotalRating { get; set; }
     }
+    public class AdmissionRequest
+    {
 
+    }
     public class Subject
     {
         public string Name { get; set; }

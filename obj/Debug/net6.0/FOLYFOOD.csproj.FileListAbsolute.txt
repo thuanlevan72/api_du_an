@@ -189,3 +189,13 @@ D:\api_du_an\api\FOLYFOOD\obj\Debug\net6.0\FOLYFOOD.pdb
 D:\api_du_an\api\FOLYFOOD\obj\Debug\net6.0\FOLYFOOD.genruntimeconfig.cache
 D:\api_du_an\api\FOLYFOOD\obj\Debug\net6.0\ref\FOLYFOOD.dll
 D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\libman.json
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\FluentEmail.Core.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\FluentEmail.Smtp.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\BouncyCastle.Cryptography.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\MailKit.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\MimeKit.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\System.Formats.Asn1.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\System.Text.Encoding.CodePages.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\api_du_an\api\FOLYFOOD\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Text.Encoding.CodePages.dll
