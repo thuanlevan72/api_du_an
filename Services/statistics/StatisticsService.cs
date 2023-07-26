@@ -1,5 +1,6 @@
 ﻿using FOLYFOOD.Dto.StatisticsDto;
 using FOLYFOOD.Entitys;
+using Microsoft.EntityFrameworkCore;
 using System.Dynamic;
 
 namespace FOLYFOOD.Services.statistics
@@ -100,8 +101,6 @@ namespace FOLYFOOD.Services.statistics
 
             return monthlyData;
         }
-
-
         public List<OrderStatusData> CalculateOrderStatusData(DateTime? startDate = null, DateTime? endDate = null)
         {
             if (startDate == null)
@@ -153,9 +152,6 @@ namespace FOLYFOOD.Services.statistics
 
             return orderStatusDataList;
         }
-
-
-
         public StatisticsData GetStatisticsData()
         {
             var data = new StatisticsData();
@@ -165,6 +161,58 @@ namespace FOLYFOOD.Services.statistics
             data.Revenue = DBContext.Orders
                     .Where(x => x.OrderStatusId == 5).Sum(x=>x.actualPrice);
             return data;
+        }
+        public List<MonthAccountCount> GetAccountCountsByMonth(DateTime? startDate, DateTime? endDate)
+        {
+            List<MonthAccountCount> accountCountsByMonth = new List<MonthAccountCount>();
+            if (startDate == null)
+            {
+                startDate = DateTime.Now.AddMonths(-6).Date; // 12 tháng trước
+            }
+            if (endDate == null)
+            {
+                endDate = DateTime.Now.Date; // Ngày hiện tại
+            }
+
+            var query = from account in DBContext.Accounts
+                        where account.CreatedAt >= startDate && account.CreatedAt <= endDate && account.DecentralizationId != 1
+                        group account by new { account.CreatedAt.Year, account.CreatedAt.Month } into g
+                        select new { Month = new DateTime(g.Key.Year, g.Key.Month, 1), Count = g.Count() };
+
+            foreach (var item in query)
+            {
+                MonthAccountCount monthAccountCount = new MonthAccountCount
+                {
+                    Month = item.Month,
+                    Count = item.Count
+                };
+                accountCountsByMonth.Add(monthAccountCount);
+            }
+
+            return accountCountsByMonth;
+        }
+
+        public Dictionary<DateTime, List<UserOrderCount>> GetOrderCountsByUserAndMonth()
+        {
+            DateTime currentDate = DateTime.Now;
+            DateTime sixMonthsAgo = currentDate.AddMonths(-6);
+
+            var query = from order in DBContext.Orders
+                        where order.CreatedAt >= sixMonthsAgo && order.CreatedAt <= currentDate && order.UserId != null
+                        group order by new { order.UserId, Month = new DateTime(order.CreatedAt.Year, order.CreatedAt.Month, 1) } into g
+                        select new UserOrderCount
+                        {
+                            account = g.FirstOrDefault().User.Account,
+                            OrderCount = g.Count(),
+                            OrderTongTien = g.Sum(o => o.actualPrice),
+                            Month = g.Key.Month
+                        };
+
+            var userOrderCountsByMonth = query.ToList()
+                .GroupBy(uoc => uoc.Month)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            return userOrderCountsByMonth;
         }
 
 

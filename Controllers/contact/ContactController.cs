@@ -1,4 +1,5 @@
 ﻿using FOLYFOOD.Dto;
+using FOLYFOOD.Dto.Contact;
 using FOLYFOOD.Dto.NewFolder;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Pagination;
@@ -53,9 +54,9 @@ namespace FOLYFOOD.Controllers.contact
             return Ok(res);
         }
         [HttpPost("reply-contact"), Authorize(Roles = "staff, admin")]
-        public IActionResult replyContact(string mess, string email)
+        public IActionResult replyContact(ContactReplyRequets contactReplyRequets)
         {
-            RetunObject<Contact> res = contactService.replyToContact(email,mess);
+            RetunObject<Contact> res = contactService.replyToContact(contactReplyRequets.email, contactReplyRequets.mess);
             if (res.errorOccurred)
             {
                 return NotFound(res);

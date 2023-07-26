@@ -78,14 +78,14 @@ namespace FOLYFOOD.Hellers.Mail
         <td align=""center"" width=""50%"">
           <!-- Hình ảnh nằm dọc -->
           <img
-            src=""https://lotusacademy.edu.vn/assets/images/lotusacademy/Logo%20LTS%20Edu-01.png""
+            src=""https://res.cloudinary.com/doedovklj/image/upload/v1690183552/xyz-abc_638258055505537759image.png""
             alt=""Background Image""
             width=""200px"" />
         </td>
         <td align=""center"" width=""50%"">
           <!-- Hình ảnh nằm dọc -->
           <img
-            src=""https://lotusacademy.edu.vn/assets/images/lotusacademy/Logo%20LTS%20Edu-01.png""
+            src=""https://res.cloudinary.com/doedovklj/image/upload/v1690185104/xyz-abc_638258071033904829image.png""
             alt=""Background Image""
             width=""200px"" />
         </td>
@@ -120,7 +120,7 @@ namespace FOLYFOOD.Hellers.Mail
           <h3>
             Chào mừng bạn
             <a style=""color: rgb(145, 33, 33)"">{mailPointRequest.studentName}</a> đăng ký khóa
-            học {mailPointRequest.studentCourse} của công ty cổ phần học viện Lotus - LTS EDU
+            học {mailPointRequest.studentCourse} của Công ty cổ phần học viện Lotus - LTS EDU
           </h3>
         </td>
       </tr>
@@ -139,15 +139,18 @@ namespace FOLYFOOD.Hellers.Mail
       <tr>
         <td colspan=""2"" class=""contact-info"">
           <p>
-            Dưới đây là biên bản cam kết và nội quy của Học Viện. Học viên vui
-            lòng đọc kỹ các quy định của Học Viện và thực hiện nghiêm túc các
-            quy định dưới Lưu ý: Các trường hợp vi phạm sẽ xử lý đúng theo quy
-            định của Học Viện
-          </p>
-          <p>
             Mọi thắc mắc Học viên liên hệ với Admin của học viện qua số điện
             thoại: {mailPointRequest.AdminPhone} để được hỗ trợ sớm nhất.
           </p>
+          <p>
+            Dưới đây là biên bản cam kết và nội quy của Học Viện. Học viên vui
+            lòng đọc kỹ các quy định của Học Viện và thực hiện nghiêm túc các
+            quy định dưới.
+          </p>
+          <p>
+            <b>Lưu ý: Các trường hợp vi phạm sẽ xử lý đúng theo quy
+            định của Học Viện.</b>
+            </p>
           <p>Trân trọng!</p>
         </td>
       </tr>

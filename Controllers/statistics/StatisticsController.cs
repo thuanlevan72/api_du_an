@@ -38,5 +38,15 @@ namespace FOLYFOOD.Controllers.statistics
         {
             return Ok(statisticsService.GetStatisticsData());
         }
+        [HttpGet("GetAccountCountsByMonth")]
+        public IActionResult GetAccountCountsByMonth(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            return Ok(statisticsService.GetAccountCountsByMonth(startDate, endDate));
+        }
+        [HttpGet("GetOrderCountsByUserAndMonth")]
+        public IActionResult GetOrderCountsByUserAndMonth(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            return Ok(statisticsService.GetOrderCountsByUserAndMonth());
+        }
     }
 }

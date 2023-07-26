@@ -20,7 +20,7 @@ namespace FOLYFOOD.Hellers.Mail
     .body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
-  background-image: url(""https://wallpaperaccess.com/full/1097489.jpg"");
+      background-image: url(""https://wallpaperaccess.com/full/1097489.jpg"");
       margin: 0;
       padding: 0;
     }

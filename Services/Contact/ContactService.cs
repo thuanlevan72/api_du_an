@@ -68,7 +68,7 @@ namespace FOLYFOOD.Services.Contact
         {
             return  new RetunObject<IQueryable<Entitys.Contact>>()
             {
-                data = DBContext.Contacts.AsQueryable(),
+                data = DBContext.Contacts.OrderBy(x=>x.answered).ThenByDescending(x=>x.CreatedAt).AsQueryable(),
                 mess = "đã gửi dữ liệu thành công",
                 statusCode = 204,
             };

@@ -146,6 +146,39 @@ namespace FOLYFOOD.Services
             await DbContext.Users.AddAsync(user);
             await DbContext.SaveChangesAsync();
             return res;
+        } 
+        public async Task<RetunObject<Account>> ChangeRole(int id)
+        {
+            Account user = await DbContext.Accounts.FirstOrDefaultAsync(x => x.AccountId == id);
+            try
+            {
+
+                if (user == null)
+                {
+                    throw new Exception("thông tin người dùng không tồn tại");
+                }
+              
+            }
+            catch (Exception ex)
+            {
+              return  new RetunObject<Account>
+                {
+                    data = null,
+                    mess = ex.Message,
+                    statusCode = 400,
+                };
+                
+            }
+            user.DecentralizationId = user.DecentralizationId == 1 ? 3 : 1;
+            DbContext.Accounts.Update(user);
+            DbContext.SaveChanges();
+            return new RetunObject<Account>
+            {
+                data = user,
+                mess = "ảnh gửi về",
+                statusCode = 204,
+            };
+
         }
         public async Task<RetunObject<string>> updateImageAvatar(IFormFile file,int id ,string accountId,string role)
         {
