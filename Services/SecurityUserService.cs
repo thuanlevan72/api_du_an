@@ -83,6 +83,30 @@ namespace FOLYFOOD.Services
             DBContext.SaveChanges();
             return acc;
         }
+        public async Task<Account> ChangeUpdateRole(UpdateRoleRequest updateRoleRequest)
+        {
+            var account = await DBContext.Accounts.FirstOrDefaultAsync(x=>x.AccountId ==  updateRoleRequest.AccountId);
+
+            if(account != null)
+            {
+                return null;
+            }
+
+            account.DecentralizationId = updateRoleRequest.DecentralizationId;
+
+            DBContext.Accounts.Update(account);
+            await DBContext.SaveChangesAsync();
+            return account;
+
+
+        }
+        public async Task<IQueryable<Decentralization>> GetRole()
+        {
+            var account =  DBContext.Decentralizations.Where(x => x.DecentralizationId != 2);
+            return account;
+
+
+        }
         public async Task<Account> Register(RegisterRequets data)
         {
 

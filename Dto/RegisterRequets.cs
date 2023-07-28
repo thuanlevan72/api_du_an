@@ -23,4 +23,12 @@ namespace FOLYFOOD.Dto
       
         public int? DecentralizationId { get; set; }
     }
+
+    public class UpdateRoleRequest
+    {
+
+        public int DecentralizationId { get; set; }
+
+        public int AccountId { get; set; }
+    }
 }

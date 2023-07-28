@@ -107,6 +107,22 @@ namespace POLYFOOD.Controllers
 
 
         }
+        [HttpPost("update-role"), Authorize(Roles = "staff, admin")]
+        public async Task<IActionResult> UpdateRoleRequest([FromForm] UpdateRoleRequest request)
+        {
+            var data = await SecurityUser.ChangeUpdateRole(request);
+            if (data == null)
+            {
+                return BadRequest("đăng ký người dùng thất bại");
+            }
+            return Ok(data);
+        }
+        [HttpPost("get-role") , Authorize(Roles = "staff, admin")]
+        public async Task<IActionResult> GetRole()
+        {
+            var data = await SecurityUser.GetRole();
+            return Ok(data);
+        }
         [HttpPost("login")]
         public IActionResult Authenticate([FromBody] LoginRequest login)
         {
