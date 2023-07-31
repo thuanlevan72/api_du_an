@@ -46,5 +46,7 @@ namespace FOLYFOOD.Entitys
         public User User { get; set; }
 
         public Staff Staff { get; set; }
+
+        public ICollection<News> News { get; set; } // Tạo mối quan hệ 1-n với bảng Tin tức
     }
 }

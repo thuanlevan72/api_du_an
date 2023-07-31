@@ -288,6 +288,62 @@ namespace FOLYFOOD.Migrations
                     b.ToTable("Infos");
                 });
 
+            modelBuilder.Entity("FOLYFOOD.Entitys.News", b =>
+                {
+                    b.Property<int>("NewsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("news_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NewsId"));
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int")
+                        .HasColumnName("account_id");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("content");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image");
+
+                    b.Property<bool>("IsShow")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_show");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("shortDescription");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("title");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("update_at")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.HasKey("NewsId");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("news");
+                });
+
             modelBuilder.Entity("FOLYFOOD.Entitys.Order", b =>
                 {
                     b.Property<int>("OrderId")
@@ -1026,6 +1082,17 @@ namespace FOLYFOOD.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FOLYFOOD.Entitys.News", b =>
+                {
+                    b.HasOne("FOLYFOOD.Entitys.Account", "Account")
+                        .WithMany("News")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("FOLYFOOD.Entitys.Order", b =>
                 {
                     b.HasOne("FOLYFOOD.Entitys.OrderStatus", "OrderStatus")
@@ -1206,6 +1273,8 @@ namespace FOLYFOOD.Migrations
 
             modelBuilder.Entity("FOLYFOOD.Entitys.Account", b =>
                 {
+                    b.Navigation("News");
+
                     b.Navigation("Staff")
                         .IsRequired();
 

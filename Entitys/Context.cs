@@ -5,6 +5,8 @@ namespace FOLYFOOD.Entitys
     public class Context : DbContext
     {
         public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<News> News { get; set; } // Thêm DbSet cho bảng Tin tức
         public DbSet<Decentralization> Decentralizations { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Staff> Staffs { get; set; }
@@ -49,6 +51,16 @@ namespace FOLYFOOD.Entitys
             .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Account>()
+                .Property(a => a.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
+
+            modelBuilder.Entity<News>()
+            .Property(a => a.CreatedAt)
+            .HasDefaultValueSql("GETDATE()")
+            .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<News>()
                 .Property(a => a.UpdatedAt)
                 .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();

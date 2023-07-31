@@ -50,7 +50,7 @@ namespace FOLYFOOD.Controllers.user
         [HttpPost("sendMail")]
         public async Task<IActionResult> sendMail(MailPointRequest mailPointRequest)
         {
-          string str = SendMail.send(mailPointRequest.Email, CourseNotificationEmailTheme.ThemeSendMail(mailPointRequest), "LTS EDU - THÔNG BÁO ĐIỂM HỌC PHẦN");
+          string str = SendMail.send(mailPointRequest.Email, CourseNotificationEmailTheme.ThemeSendMail(mailPointRequest), "LTS EDU - THÔNG BÁO ĐIỂM HỌC PHẦN",true);
            return Ok(str);
         }
         [HttpPost("sendMail/welcome-to-admission")]

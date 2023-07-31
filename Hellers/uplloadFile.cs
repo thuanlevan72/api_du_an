@@ -15,7 +15,7 @@ namespace FOLYFOOD.Hellers
 
         static public Account account = new Account(cloudName, apiKey, apiSecret);
         static public Cloudinary _cloudinary = new Cloudinary(account);
-        public static async Task<string> UploadFile(IFormFile file)
+        public static async Task<string> UploadFile(IFormFile file,bool checkImage = false)
         {
             if (file == null || file.Length == 0)
             {
@@ -28,9 +28,12 @@ namespace FOLYFOOD.Hellers
                 {
                     File = new FileDescription(file.FileName, stream),
                     PublicId = "xyz-abc" + "_" + DateTime.Now.Ticks + "image" ,// ID công khai tùy ý cho file phải tuyệt đối là không được giống nhau
-                     Transformation = new Transformation().Width(400).Height(400).Crop("fill") // Cố định kích thước ảnh thành tỷ lệ 3*4 pixel
                 };
-
+                if (!checkImage)
+                {
+                    uploadParams.Transformation = new Transformation().Width(400).Height(400).Crop("fill"); // Cố định kích thước ảnh thành tỷ lệ 3*4 pixel
+                }
+               
                 var uploadResult = await uplloadFile._cloudinary.UploadAsync(uploadParams);
 
                 if (uploadResult.Error != null)

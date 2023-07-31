@@ -57,7 +57,7 @@ namespace POLYFOOD.Controllers
 
             try
             {
-                string imageUrl = await uplloadFile.UploadFile(file);
+                string imageUrl = await uplloadFile.UploadFile(file,true);
                 return Ok(imageUrl); 
             }
             catch (ArgumentException ex)

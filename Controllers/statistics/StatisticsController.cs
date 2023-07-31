@@ -23,7 +23,7 @@ namespace FOLYFOOD.Controllers.statistics
         {
             return Ok(statisticsService.GetTopSellingProducts(startDate,endDate));
         }
-        [HttpGet("CalculateMonthlyRevenue"), Authorize(Roles = "admin")]
+        [HttpGet("CalculateMonthlyRevenue")]
         public IActionResult GetCalculateMonthlyRevenue(DateTime? startDate = null, DateTime? endDate = null)
         {
             return Ok(statisticsService.CalculateMonthlyRevenueAndOrderCount(startDate, endDate));

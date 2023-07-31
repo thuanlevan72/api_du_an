@@ -151,6 +151,7 @@ namespace FOLYFOOD.Services
                 DecentralizationId = 3,
                 UserName = data.UserName,
                 Email = data.Email,
+                ResetPasswordToken = "",
             };
             SendMail.send(data.Email, Template1.temlapteHtmlMail(), "poly food");
             await DBContext.Accounts.AddAsync(res);
