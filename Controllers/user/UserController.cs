@@ -139,7 +139,7 @@ namespace FOLYFOOD.Controllers.user
             // Thêm 1 giờ vào múi giờ của Việt Nam
             DateTime resetPasswordTokenExpiry = vietnamTime.AddHours(1);
             // Tạo và lưu trữ mã đặt lại mật khẩu
-            user.ResetPasswordToken = GenerateResetPasswordToken.GenerateResetPassToken();
+            user.ResetPasswordToken = GenerateResetPasswordToken.GenerateResetPassToken(); // tạo token
             user.ResetPasswordTokenExpiry = resetPasswordTokenExpiry;
             await _dbContext.SaveChangesAsync();
 
