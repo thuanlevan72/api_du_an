@@ -39,6 +39,7 @@ namespace FOLYFOOD.Entitys
         public DbSet<ImagePage> ImagePages { get; set; }
 
         public DbSet<Voucher> Vouchers { get; set; }
+        public DbSet<VoucherUser> VoucherUsers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -231,6 +232,16 @@ namespace FOLYFOOD.Entitys
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Voucher>()
+                .Property(v => v.UpdatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnUpdate();
+
+            modelBuilder.Entity<VoucherUser>()
+                .Property(v => v.CreatedAt)
+                .HasDefaultValueSql("GETDATE()")
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<VoucherUser>()
                 .Property(v => v.UpdatedAt)
                 .HasDefaultValueSql("GETDATE()")
                 .ValueGeneratedOnUpdate();

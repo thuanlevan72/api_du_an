@@ -24,5 +24,7 @@ namespace FOLYFOOD.Entitys
 
         // Mối quan hệ: Một User có nhiều Booking
         public ICollection<Booking> Bookings { get; set; }
+
+        public ICollection<VoucherUser> VoucherUsers { get; set; }
     }
 }

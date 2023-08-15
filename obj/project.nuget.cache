@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "L7/ogp5E2oGIh3jLXXurAUr+KwdLEZ+h7RVvbhUz0RDwN0ImQs0cRvFh8KSwXI9OAtDnbbdXN7sjUejrqVUe3w==",
+  "dgSpecHash": "z0oN3Em38gzOiwNB2DGgFkq4BnVDAGBgPHT5ofHz8Q567keh2Nmuw7334ocumUr4jsOdJKkgBzHYtcp92YK6dg==",
   "success": true,
-  "projectFilePath": "D:\\api_du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj",
+  "projectFilePath": "D:\\C#\\api_du_an\\FOLYFOOD.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\thuan\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\thuan\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

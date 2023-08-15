@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\api_du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj": {}
+    "D:\\C#\\api_du_an\\FOLYFOOD.csproj": {}
   },
   "projects": {
-    "D:\\api_du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj": {
+    "D:\\C#\\api_du_an\\FOLYFOOD.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\api_du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj",
+        "projectUniqueName": "D:\\C#\\api_du_an\\FOLYFOOD.csproj",
         "projectName": "FOLYFOOD",
-        "projectPath": "D:\\api_du_an\\api\\FOLYFOOD\\FOLYFOOD.csproj",
+        "projectPath": "D:\\C#\\api_du_an\\FOLYFOOD.csproj",
         "packagesPath": "C:\\Users\\thuan\\.nuget\\packages\\",
-        "outputPath": "D:\\api_du_an\\api\\FOLYFOOD\\obj\\",
+        "outputPath": "D:\\C#\\api_du_an\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\thuan\\AppData\\Roaming\\NuGet\\NuGet.Config",
