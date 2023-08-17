@@ -72,7 +72,7 @@ namespace FOLYFOOD.Controllers.productType
         }
 
         // DELETE api/<ProductTypeController>/5
-        [HttpGet("delete/{id}"), Authorize(Roles = "staff, admin")]
+        [HttpGet("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var res = await TypeProductService.DeleteproductType(id);

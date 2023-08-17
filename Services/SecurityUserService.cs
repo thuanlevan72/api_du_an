@@ -85,9 +85,9 @@ namespace FOLYFOOD.Services
         }
         public async Task<Account> ChangeUpdateRole(UpdateRoleRequest updateRoleRequest)
         {
-            var account = await DBContext.Accounts.FirstOrDefaultAsync(x=>x.AccountId ==  updateRoleRequest.AccountId);
+            var account =  DBContext.Accounts.FirstOrDefault(x=>x.AccountId ==  updateRoleRequest.AccountId);
 
-            if(account != null)
+            if(account == null)
             {
                 return null;
             }

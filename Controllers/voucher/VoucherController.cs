@@ -74,6 +74,24 @@ namespace FOLYFOOD.Controllers.voucher
             return Ok(res);
         }
 
+        [HttpPost("send-promotion")]
+        public async Task<IActionResult> SendPromotion([FromBody] VoucherMailRequest value)
+        {
+            RetunObject<User> res = await voucherService.sendMailPromotionToUser(value.UserId,value.VoucherId);
+            if (res.errorOccurred)
+            {
+                return NotFound(res);
+            }
+            return Ok(res);
+        }
+
+        [HttpGet("users-without-promotion-usage/{voucherId}")]
+        public async Task<IActionResult> UsersWithoutPromotionUsage(int voucherId)
+        {
+            IQueryable<User> data = await voucherService.GetUsersWithoutPromotionUsage(voucherId);
+            return Ok(data);
+        }
+
         // PUT api/<VoucherController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
