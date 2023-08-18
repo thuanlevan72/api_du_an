@@ -109,7 +109,7 @@ namespace FOLYFOOD.Services.voucher
             }
             if (ValidateValue.IsValidEmail(user.Email))
             {
-                SendMail.send(user.Email,EmailSendPromotionThemeUser.ThemeSendMail(Voucher.VoucherCode, user.UserName == "" ? user.Account.UserName : user.UserName), "foly food");
+                SendMail.send(user.Email,EmailSendPromotionThemeUser.ThemeSendMail(Voucher.VoucherCode,Voucher.Valuevoucher, user.UserName == "" ? user.Account.UserName : user.UserName), "foly food");
             }
             return new RetunObject<User>()
             {
@@ -129,7 +129,7 @@ namespace FOLYFOOD.Services.voucher
             TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time"); // Múi giờ Việt Nam (UTC+7)
 
             DateTime nowVietnam = TimeZoneInfo.ConvertTimeFromUtc(nowUtc, vietnamTimeZone); // Chuyển thời gian hiện tại sang múi giờ Việt Nam
-            var Voucher = DBContext.Vouchers.SingleOrDefault(x => x.VoucherCode == codeVoucher && x.expirationDate > nowVietnam);
+            var Voucher = DBContext.Vouchers.SingleOrDefault(x => x.VoucherCode == codeVoucher && x.expirationDate > nowVietnam );
             try
             {
                 if (Voucher == null)
@@ -140,7 +140,7 @@ namespace FOLYFOOD.Services.voucher
                 {
                     throw new Exception("người dùng không tồn tại");
                 }
-                if (Voucher.CountVoucher < 0)
+                if (Voucher.CountVoucher <= 0)
                 {
                     throw new Exception("Hết voucher rồi");
                 }

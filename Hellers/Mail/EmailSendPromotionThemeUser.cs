@@ -4,7 +4,7 @@ namespace FOLYFOOD.Hellers.Mail
 {
     public class EmailSendPromotionThemeUser
     {
-        public static string ThemeSendMail(string  voucherCode, string username)
+        public static string ThemeSendMail(string  voucherCode, int value, string username)
         {
             string changeLink = "https://polyfood.store/";
             string emailTemplate = @"
@@ -38,13 +38,14 @@ namespace FOLYFOOD.Hellers.Mail
   }
   .button {
     display: inline-block;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #fff;
     padding: 10px 20px;
+    border: 1px black;
     text-decoration: none;
     border-radius: 4px;
     margin-top: 20px;
   }
+
 </style>
 </head>
 <body>
@@ -55,7 +56,7 @@ namespace FOLYFOOD.Hellers.Mail
   </div>
   <div class=""content"">
     <p>Xin chào " + username + @",</p>
-    <p>Chúc mừng bạn! Bạn đã nhận được một voucher đặc biệt cho lần mua sắm kế tiếp.</p>
+    <p>Chúc mừng bạn! Bạn đã nhận được một voucher đặc biệt trị giá " + value + @"% cho lần mua sắm kế tiếp.</p>
     <div class=""voucher"">
       <strong>[Mã Voucher]: " + voucherCode + @"</strong>
     </div>
