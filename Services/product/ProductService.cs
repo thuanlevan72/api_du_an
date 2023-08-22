@@ -89,6 +89,14 @@ namespace FOLYFOOD.Services.product
                 {
                     throw new Exception("không tìm thấy sản phẩm cần tìm ");
                 }
+                if(DBContext.OrderDetails.Where(x=>x.ProductId == productId).Count() > 0)
+                {
+                    throw new Exception("Không thể xóa tác nhân đã phụ thuộc");
+                }
+                if(DBContext.ProductReviews.Where(x => x.ProductId == productId).Count() > 0)
+                {
+                    throw new Exception("Không thể xóa tác nhân đã phụ thuộc");
+                } 
             }
             catch (Exception ex)
             {
@@ -195,7 +203,7 @@ namespace FOLYFOOD.Services.product
                 product.ProductType.Products = null;
             }
 
-            return data.OrderByDescending(x => x.number_of_views).ThenByDescending(x => x.ProductId);
+            return data.OrderByDescending(x=>x.Status).ThenByDescending(x => x.number_of_views).ThenByDescending(x => x.ProductId);
         }
 
         public async Task<RetunObject<Product>> updateProduct(int productId, ProductDto product)

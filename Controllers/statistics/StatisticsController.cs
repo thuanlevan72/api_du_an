@@ -18,7 +18,7 @@ namespace FOLYFOOD.Controllers.statistics
             statisticsService = new StatisticsService();
         }
         // GET: api/<StatisticsController>
-        [HttpGet("TopSellingProducts"), Authorize(Roles = "admin")]
+        [HttpGet("TopSellingProducts")]
         public  IActionResult GetTopSellingProducts(DateTime? startDate = null, DateTime? endDate = null)
         {
             return Ok(statisticsService.GetTopSellingProducts(startDate,endDate));

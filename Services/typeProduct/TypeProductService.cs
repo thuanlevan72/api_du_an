@@ -98,7 +98,7 @@ namespace FOLYFOOD.Services.typeProduct
 
         public async Task<IQueryable<ProductType>> getProductType()
         {
-            return DBContext.ProductTypes;
+            return DBContext.ProductTypes.Include(x=>x.Products).AsNoTracking();
         }
 
         public async Task<RetunObject<ProductType>> getTypeProductDetail(int productTypeId)
