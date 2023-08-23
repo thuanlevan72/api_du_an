@@ -26,5 +26,7 @@ namespace FOLYFOOD.Entitys
         public ICollection<Booking> Bookings { get; set; }
 
         public ICollection<VoucherUser> VoucherUsers { get; set; }
+
+        public Carts Carts { get; set; }
     }
 }

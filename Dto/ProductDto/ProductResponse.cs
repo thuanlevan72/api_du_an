@@ -14,7 +14,7 @@
         public List<string> tag { get; set; } = new List<string>();
 
         public List<string> category { get; set; } = new List<string>();
-
+        
         public List<string> image { get; set; } = new List<string>();
 
         public string shortDescription { get; set; }
@@ -23,6 +23,7 @@
 
 
     }
+    
 }
 //"id": "34",
 //    "sku": "asdf156",

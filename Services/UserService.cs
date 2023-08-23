@@ -145,6 +145,13 @@ namespace FOLYFOOD.Services
             };
             await DbContext.Users.AddAsync(user);
             await DbContext.SaveChangesAsync();
+
+            var carts = new Carts()
+            {
+                UserId = user.UserId,
+            };
+            await DbContext.Carts.AddAsync(carts);
+            await DbContext.SaveChangesAsync();
             return res;
         } 
         public async Task<RetunObject<Account>> ChangeRole(int id)

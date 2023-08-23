@@ -131,6 +131,63 @@ namespace FOLYFOOD.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("FOLYFOOD.Entitys.CartItem", b =>
+                {
+                    b.Property<int>("CartItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("cart_item_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
+
+                    b.Property<int>("CartsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartItemId");
+
+                    b.HasIndex("CartsId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("cart_item");
+                });
+
+            modelBuilder.Entity("FOLYFOOD.Entitys.Carts", b =>
+                {
+                    b.Property<int>("CartsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("carts_id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartsId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartsId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("carts");
+                });
+
             modelBuilder.Entity("FOLYFOOD.Entitys.Contact", b =>
                 {
                     b.Property<int>("ContactId")
@@ -1117,6 +1174,36 @@ namespace FOLYFOOD.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FOLYFOOD.Entitys.CartItem", b =>
+                {
+                    b.HasOne("FOLYFOOD.Entitys.Carts", "Carts")
+                        .WithMany("cartItems")
+                        .HasForeignKey("CartsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FOLYFOOD.Entitys.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carts");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("FOLYFOOD.Entitys.Carts", b =>
+                {
+                    b.HasOne("FOLYFOOD.Entitys.User", "user")
+                        .WithOne("Carts")
+                        .HasForeignKey("FOLYFOOD.Entitys.Carts", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
             modelBuilder.Entity("FOLYFOOD.Entitys.News", b =>
                 {
                     b.HasOne("FOLYFOOD.Entitys.Account", "Account")
@@ -1344,6 +1431,11 @@ namespace FOLYFOOD.Migrations
                     b.Navigation("ReservationDetailsServices");
                 });
 
+            modelBuilder.Entity("FOLYFOOD.Entitys.Carts", b =>
+                {
+                    b.Navigation("cartItems");
+                });
+
             modelBuilder.Entity("FOLYFOOD.Entitys.Decentralization", b =>
                 {
                     b.Navigation("Accounts");
@@ -1398,6 +1490,9 @@ namespace FOLYFOOD.Migrations
             modelBuilder.Entity("FOLYFOOD.Entitys.User", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("Carts")
+                        .IsRequired();
 
                     b.Navigation("ProductReviews");
 

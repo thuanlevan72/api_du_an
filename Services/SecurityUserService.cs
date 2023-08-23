@@ -167,6 +167,13 @@ namespace FOLYFOOD.Services
             };
             await DBContext.Users.AddAsync(user);
             await DBContext.SaveChangesAsync();
+
+            var carts = new Carts()
+            {
+                UserId = user.UserId,
+            };
+            await DBContext.Carts.AddAsync(carts);
+            await DBContext.SaveChangesAsync();
             return res;
         }
         public  Account checkLogin(string email,string password) 
