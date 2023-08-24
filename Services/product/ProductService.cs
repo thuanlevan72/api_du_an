@@ -366,6 +366,7 @@ namespace FOLYFOOD.Services.product
                 dataOne.stock = item.Quantity;
                 dataOne.name = item.NameProduct;
                 dataOne.saleCount = item.Quantity;
+                dataOne.category.Add("all");
                 dataOne.category.Add(item.ProductType.NameProductType.ToString());
                 dataOne.new_product = daysDifference <= 5;
                 dataOne.fullDescription = string.IsNullOrEmpty(item.fullDescription) ? "dữ liệu chưa được cập nhật" : item.fullDescription;

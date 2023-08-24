@@ -56,6 +56,11 @@ namespace FOLYFOOD.Controllers.cart
         {
             return Ok(cartServicer.AddCartItem(value));
         }
+        [HttpPost("add-cart-list")]
+        public IActionResult PostCartList([FromBody] CartCreateRequest value)
+        {
+            return Ok(cartServicer.AddListCartItem(value));
+        }
 
         // PUT api/<CartController>/5
         [HttpPut("{id}")]

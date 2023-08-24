@@ -34,6 +34,11 @@ namespace FOLYFOOD.Controllers.productType
             };
             return Ok(test);
         }
+        [HttpGet("GetCategoryFrontend")]
+        public async Task<IActionResult> GetCategoryFrontend()
+        {
+            return Ok(await TypeProductService.getProductTypeFrontend());
+        }
 
         // GET api/<ProductTypeController>/5
         [HttpGet("{id}")]

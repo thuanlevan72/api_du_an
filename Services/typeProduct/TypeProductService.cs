@@ -22,7 +22,7 @@ namespace FOLYFOOD.Services.typeProduct
         {
             try
             {
-                if(string.IsNullOrEmpty(productType.NameProductType))
+                if (string.IsNullOrEmpty(productType.NameProductType))
                 {
                     throw new Exception("không nhập tên loại sản phẩm vào ");
                 }
@@ -42,7 +42,7 @@ namespace FOLYFOOD.Services.typeProduct
                     statusCode = 401
                 };
             }
-            
+
             string link = await uplloadFile.UploadFile(productType.ImageTypeProduct);
             ProductType typeProduct = new ProductType()
             {
@@ -62,7 +62,7 @@ namespace FOLYFOOD.Services.typeProduct
 
         public async Task<RetunObject<ProductType>> DeleteproductType(int productTypeId)
         {
-            var res = await DBContext.ProductTypes.Include(x=>x.Products).SingleOrDefaultAsync(x => x.ProductTypeId == productTypeId);
+            var res = await DBContext.ProductTypes.Include(x => x.Products).SingleOrDefaultAsync(x => x.ProductTypeId == productTypeId);
             try
             {
                 if (res == null)
@@ -70,7 +70,7 @@ namespace FOLYFOOD.Services.typeProduct
                     throw new Exception("khong ton tai doi tuong can sua");
 
                 }
-                if(res.Products.Count() > 0)
+                if (res.Products.Count() > 0)
                 {
                     throw new Exception("sản phẩm của loại sản phẩm này vẫn còn");
                 }
@@ -98,17 +98,31 @@ namespace FOLYFOOD.Services.typeProduct
 
         public async Task<IQueryable<ProductType>> getProductType()
         {
-            return DBContext.ProductTypes.Include(x=>x.Products).AsNoTracking();
+            return DBContext.ProductTypes.Include(x => x.Products).AsNoTracking();
         }
-
+        public async Task<IQueryable<dynamic>> getProductTypeFrontend()
+        {
+            return DBContext.ProductTypes
+    .Where(x => x.Products.Count() > 0)
+    .Select(x => new
+    {
+        ProductTypeId = x.ProductTypeId,
+        NameProductType = x.NameProductType,
+        ImageTypeProduct = x.ImageTypeProduct,
+        CreatedAt = x.CreatedAt,
+        UpdatedAt = x.UpdatedAt,
+        Key = Guid.NewGuid()
+    }).AsNoTracking();
+        }
         public async Task<RetunObject<ProductType>> getTypeProductDetail(int productTypeId)
         {
             var res = await DBContext.ProductTypes.SingleOrDefaultAsync(x => x.ProductTypeId == productTypeId);
             try
             {
-                if(res == null) { throw new Exception("không tồn tại loại sản phẩm trong dữ liệu"); }
+                if (res == null) { throw new Exception("không tồn tại loại sản phẩm trong dữ liệu"); }
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new RetunObject<ProductType>()
                 {
@@ -125,12 +139,12 @@ namespace FOLYFOOD.Services.typeProduct
             };
         }
 
-        public async Task<RetunObject<ProductType>> updateProductType(int id,ProductTypeDto productType)
+        public async Task<RetunObject<ProductType>> updateProductType(int id, ProductTypeDto productType)
         {
             var res = DBContext.ProductTypes.SingleOrDefault(x => x.ProductTypeId == id);
             try
             {
-                if(res == null)
+                if (res == null)
                 {
                     throw new Exception("khong ton tai doi tuong can sua");
                 }
@@ -138,7 +152,7 @@ namespace FOLYFOOD.Services.typeProduct
                 {
                     throw new Exception("không nhập tên loại sản phẩm vào ");
                 }
-                if(productType.ImageTypeProduct != null)
+                if (productType.ImageTypeProduct != null)
                 {
                     bool checkImage = ImageChecker.IsImage(productType.ImageTypeProduct);
                     if (!checkImage)
@@ -146,7 +160,7 @@ namespace FOLYFOOD.Services.typeProduct
                         throw new Exception("xử lý ảnh lỗi");
                     }
                 }
-             
+
             }
             catch (Exception ex)
             {
@@ -158,13 +172,13 @@ namespace FOLYFOOD.Services.typeProduct
                 };
             }
             res.NameProductType = productType.NameProductType;
-            if(productType.ImageTypeProduct != null)
+            if (productType.ImageTypeProduct != null)
             {
-               await uplloadFile.DeleteFile(res.ImageTypeProduct);
-               string link = await uplloadFile.UploadFile(productType.ImageTypeProduct);
+                await uplloadFile.DeleteFile(res.ImageTypeProduct);
+                string link = await uplloadFile.UploadFile(productType.ImageTypeProduct);
                 res.ImageTypeProduct = link;
             }
-            
+
             DBContext.ProductTypes.Update(res);
             DBContext.SaveChanges();
             return new RetunObject<ProductType>()

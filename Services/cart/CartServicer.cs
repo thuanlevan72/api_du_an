@@ -64,13 +64,39 @@ namespace FOLYFOOD.Services.cart
 
         }
 
+        public string AddListCartItem(CartCreateRequest value)
+        {
+            var user = DBContext.Users.AsNoTracking().SingleOrDefault(x => x.UserId == value.UserId);
+
+            if (user == null)
+            {
+                return "không tồn tại người dùng.";
+            }
+            var carts = DBContext.Carts.AsNoTracking().SingleOrDefault(x => x.UserId == user.UserId);
+            bool checkCartItem = DBContext.CartItems.Any(x => x.CartsId == carts.CartsId);
+            if(carts != null && value.Carts.Count > 0 && !checkCartItem)
+            {
+                List<CartItem> items = value.Carts.Select(x=>new CartItem()
+                {
+                    CartsId = carts.CartsId,
+                    ProductId = x.ProductId,
+                    Quantity = x.Quantity,
+                }).ToList();
+
+               DBContext.CartItems.AddRange(items);
+               DBContext.SaveChanges();
+                return "đã thêm vào giỏ hàng thành công";
+            }
+            return "thêm thất bại";
+            
+        }
         public string AddCartItem(CartItemRequest value)
         {
             var user = DBContext.Users.AsNoTracking().SingleOrDefault(x=>x.UserId == value.UserId);
 
-                if(user == null)
+                if(user == null || value.Quantity <= 0)
                 {
-                    return "không tồn tại người dùng.";
+                    return "không tồn tại người dùng hoặc sản phẩm không có số lượng.";
                 }
             
             
