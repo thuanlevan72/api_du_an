@@ -1,6 +1,7 @@
 ﻿using CloudinaryDotNet;
 using FOLYFOOD.Dto;
 using FOLYFOOD.Dto.oderDto;
+using FOLYFOOD.Dto.oderDto.orderDetailDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers.Pagination;
 using FOLYFOOD.Hellers.vnPay;
@@ -212,6 +213,16 @@ namespace FOLYFOOD.Controllers.order
         public async Task<IActionResult> Put(int id, int idStatus)
         {
             var res = await orderServicer.updateStatusOrder(id,idStatus);
+            if (res.errorOccurred)
+            {
+                return NotFound(res);
+            }
+            return Ok(res);
+        }
+        [HttpPost("CompleteOrder")]
+        public async Task<IActionResult> CompleteOrder([FromForm] CompleteOrderRequest value)
+        {
+            var res = await orderServicer.CompleteOrder(value);
             if (res.errorOccurred)
             {
                 return NotFound(res);

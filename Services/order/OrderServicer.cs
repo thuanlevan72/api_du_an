@@ -5,10 +5,12 @@ using FOLYFOOD.Dto.oderDto;
 using FOLYFOOD.Dto.oderDto.orderDetailDto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
+using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.Hellers.Mail;
 using FOLYFOOD.Hellers.validate;
 using FOLYFOOD.IService.IOrder;
 using FOLYFOOD.Services.product;
+using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
@@ -135,11 +137,63 @@ namespace FOLYFOOD.Services.order
             }; ;
         }
 
+        public async Task<RetunObject<Order>> CompleteOrder(CompleteOrderRequest value)
+        {
+            var dataOne = DBContext.Orders.FirstOrDefault(x => x.OrderId == value.OrderId);
+            var OrderDetail = DBContext.OrderDetails.Where(x => x.OrderId == value.OrderId).Include(x => x.Product);
+            var PaymentOrder = DBContext.PaymentOrders.FirstOrDefault(x => x.PaymentId == dataOne.PaymentOrderPaymentId);
+            var statusOrder = DBContext.OrderStatuses.FirstOrDefault(x => x.OrderStatusId == dataOne.OrderStatusId);
+            dataOne.OrderDetails = OrderDetail.ToArray();
+            dataOne.OrderStatus = statusOrder;
+            dataOne.PaymentOrder = PaymentOrder;
+            try
+            {
+                if (dataOne == null)
+                {
+                    throw new Exception("đơn hàng không tồn tại");
+                }
+                if (DBContext.OrderStatuses.SingleOrDefault(x => x.OrderStatusId == 5) == null)
+                {
+                    throw new Exception("trạng thái chưa được định nghĩa");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new RetunObject<Order>()
+                {
+                    data = null,
+                    mess = ex.Message,
+                    statusCode = 401
+                };
+            }
+            int imageSize = 2 * 1024 * 1024;
+            if (!ImageChecker.IsImage(value.formFile, imageSize))
+            {
+                return null;
+            };
+            var avatarFile = value.formFile;
+
+            string imageUrl = await uplloadFile.UploadFile(avatarFile);
+            dataOne.OrderStatusId = 5;
+            dataOne.ImageComplete = imageUrl;
+            DBContext.Orders.Update(dataOne);
+            DBContext.SaveChanges();
+            if (ValidateValue.IsValidEmail(dataOne.Email))
+            {
+                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne, "Cập nhật trạng thái đơn"), "foly food");
+            }
+            return new RetunObject<Order>()
+            {
+                data = dataOne,
+                mess = "trạng thái đã được thay đổi",
+                statusCode = 201
+            };
+        }
 
         public async Task<RetunObject<Order>> updateStatusOrder(int orderId, int statusId)
         {
             var dataOne = DBContext.Orders.FirstOrDefault(x => x.OrderId == orderId);
-            var OrderDetail  = DBContext.OrderDetails.Where(x=>x.OrderId == orderId).Include(x=>x.Product);
+            var OrderDetail = DBContext.OrderDetails.Where(x => x.OrderId == orderId).Include(x => x.Product);
             var PaymentOrder = DBContext.PaymentOrders.FirstOrDefault(x => x.PaymentId == dataOne.PaymentOrderPaymentId);
             var statusOrder = DBContext.OrderStatuses.FirstOrDefault(x => x.OrderStatusId == dataOne.OrderStatusId);
             dataOne.OrderDetails = OrderDetail.ToArray();

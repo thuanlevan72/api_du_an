@@ -14,7 +14,8 @@ namespace FOLYFOOD.Entitys
         public double actualPrice { get; set; }
         public string FullName { get; set; }
         public string Phone { get; set; }
-        public string Address { get; set; } 
+        public string ImageComplete { get; set; }
+        public string Address { get; set; }
         public string Email { get; set; }
         public string noteOrder { get; set; }
         public DateTime CreatedAt { get; set; }

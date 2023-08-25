@@ -7,4 +7,10 @@
         public int Quantity { get; set; }
         public double Price { get; set; }
     }
+
+    public class CompleteOrderRequest
+    {
+        public int OrderId { get; set;}
+        public IFormFile formFile { get; set; }
+    }
 }

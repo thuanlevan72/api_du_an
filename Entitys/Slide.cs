@@ -9,6 +9,8 @@ namespace FOLYFOOD.Entitys
         public int SlidesId { get; set; }
         public string SlideImage { get; set; }
         public string Title { get; set; }
+        public string SubTitle { get; set; }
+        public string Url { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
