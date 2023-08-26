@@ -118,15 +118,27 @@ namespace FOLYFOOD.Services.slide
                     statusCode = 400,
                 };
             }
+            if(Slides.IsShow == 1)
+            {
+                return new RetunObject<Slides>()
+                {
+                    data = null,
+                    mess = "đã được hiển thị rồi",
+                    statusCode = 400,
+                };
+            }
             Slides.IsShow = 1;
             DBContext.Slides.Update(Slides);
             DBContext.SaveChanges();
-
+            var listSlide = DBContext.Slides.SingleOrDefault(x => x.IsShow == 1 && x.SlidesId != slidesId);
+            listSlide.IsShow = 0;
+            DBContext.Slides.Update(listSlide);
+            DBContext.SaveChanges();
             return new RetunObject<Slides>()
             {
                 data = Slides,
                 mess = "hiện thành công",
-                statusCode = 400,
+                statusCode = 200,
             };
         }
 

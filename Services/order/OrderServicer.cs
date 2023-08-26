@@ -71,6 +71,7 @@ namespace FOLYFOOD.Services.order
                 PaymentOrderPaymentId = order.PaymentId,
                 Address = order.Address,
                 Email = order.Email,
+                ImageComplete = "",
                 noteOrder = !string.IsNullOrEmpty(order.noteOrder) ? order.noteOrder : "",
                 Phone = order.Phone,
                 FullName = order.FullName,
