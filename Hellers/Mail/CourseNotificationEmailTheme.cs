@@ -15,7 +15,7 @@ namespace FOLYFOOD.Hellers.Mail
   <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
   <meta name=""viewport"" content=""width=device-width, initial-scale=1"">
   <title>LTS EDU - THÔNG BÁO ĐIỂM HỌC PHẦN</title>
-  <style>
+  <style>a
     /* Đoạn mã CSS của giao diện email */
     .body {
       font-family: Arial, sans-serif;

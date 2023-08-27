@@ -455,12 +455,24 @@ namespace FOLYFOOD.Migrations
                     b.Property<double>("actualPrice")
                         .HasColumnType("float");
 
+                    b.Property<int>("districts")
+                        .HasColumnType("int");
+
                     b.Property<string>("noteOrder")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("originalPrice")
                         .HasColumnType("float");
+
+                    b.Property<int>("pickupTime")
+                        .HasColumnType("int");
+
+                    b.Property<int>("provinces")
+                        .HasColumnType("int");
+
+                    b.Property<int>("wards")
+                        .HasColumnType("int");
 
                     b.HasKey("OrderId");
 

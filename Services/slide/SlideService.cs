@@ -123,7 +123,7 @@ namespace FOLYFOOD.Services.slide
                 return new RetunObject<Slides>()
                 {
                     data = null,
-                    mess = "đã được hiển thị rồi",
+                    mess = "đã được hiển thị rồi    ",
                     statusCode = 400,
                 };
             }

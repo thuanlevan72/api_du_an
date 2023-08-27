@@ -72,6 +72,10 @@ namespace FOLYFOOD.Services.order
                 Address = order.Address,
                 Email = order.Email,
                 ImageComplete = "",
+                provinces = order.provinces,
+                districts = order.districts,
+                wards = order.wards,
+                pickupTime = order.pickupTime,
                 noteOrder = !string.IsNullOrEmpty(order.noteOrder) ? order.noteOrder : "",
                 Phone = order.Phone,
                 FullName = order.FullName,
@@ -241,6 +245,18 @@ namespace FOLYFOOD.Services.order
             var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
             return res.OrderByDescending(x => x.CreatedAt);
         }
+        public async Task<IQueryable<Order>> OrderHasBeenConfirmed()
+        {
+            var DataOrder = DBContext.Orders.Where(x => x.OrderStatusId == 15).Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
+            return res.OrderByDescending(x => x.CreatedAt);
+        }
+        public async Task<IQueryable<Order>> OrderCanceledByCustomer()
+        {
+            var DataOrder = DBContext.Orders.Where(x => x.OrderStatusId == 12).Include(x => x.OrderDetails).ThenInclude(x => x.Product);
+            var res = DataOrder.Include(x => x.OrderDetails).Include(x => x.OrderStatus).AsNoTracking().AsQueryable();
+            return res.OrderByDescending(x => x.CreatedAt);
+        }
         public async Task<IQueryable<Order>> getOrdersAreBeingDelivered()
         {
             var DataOrder = DBContext.Orders.Where(x => x.OrderStatusId == 9).Include(x => x.OrderDetails).ThenInclude(x => x.Product);
@@ -280,13 +296,13 @@ namespace FOLYFOOD.Services.order
 
         public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role) {
             var dataOne = DBContext.Orders.FirstOrDefault(x => x.CodeOrder == code);
-            var OrderDetail = DBContext.OrderDetails.Where(x => x.OrderId == dataOne.OrderId).Include(x => x.Product);
-            var PaymentOrder = DBContext.PaymentOrders.FirstOrDefault(x => x.PaymentId == dataOne.PaymentOrderPaymentId);
-            var statusOrder = DBContext.OrderStatuses.FirstOrDefault(x => x.OrderStatusId == dataOne.OrderStatusId);
+         
+          
+           
             var user = DBContext.Users.FirstOrDefault(x => x.UserId == dataOne.UserId);
-            dataOne.OrderDetails = OrderDetail.ToArray();
-            dataOne.OrderStatus = statusOrder;
-            dataOne.PaymentOrder = PaymentOrder;
+
+        
+         
             try
             {
                 if (dataOne == null)
@@ -302,14 +318,13 @@ namespace FOLYFOOD.Services.order
                 }
                 DateTime currentDate = DateTime.Now;
                 DateTime availableDate = dataOne.CreatedAt;
-
                 TimeSpan difference = currentDate - availableDate;
                 int daysDifference = (int)difference.TotalDays;
                 if (daysDifference > 2)
                 {
                     throw new Exception("Đơn hàng của quý khách đã quá hạn để hủy.");
                 }
-                if (statusOrder.OrderStatusId !=4)
+                if (dataOne.OrderStatusId !=4)
                 {
                     throw new Exception("Đơn hàng của đã được sử lý rồi không được hủy.");
                 }
@@ -323,12 +338,12 @@ namespace FOLYFOOD.Services.order
                     statusCode = 401
                 };
             }
-            dataOne.OrderStatusId = 7;
+            dataOne.OrderStatusId = 12;
             DBContext.Orders.Update(dataOne);
             DBContext.SaveChanges();
             if (ValidateValue.IsValidEmail(dataOne.Email))
             {
-                SendMail.send(dataOne.Email, OrderEmailTemplate.GenerateOrderEmail(dataOne, "Cập nhật trạng thái đơn"), "foly food");
+                SendMail.send(dataOne.Email, CancelOrderTheme.ThemeSendMail(dataOne.FullName, dataOne.CodeOrder), "foly food");
             }
 
             return new RetunObject<Order>()

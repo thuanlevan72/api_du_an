@@ -160,6 +160,32 @@ namespace FOLYFOOD.Controllers.order
             };
             return Ok(test);
         }
+        [HttpGet("OrderHasBeenConfirmed"), Authorize(Roles = "admin")]
+        public async Task<IActionResult> OrderHasBeenConfirmed(int page = 1, int pageSize = 10)
+        {
+            var data = await orderServicer.OrderHasBeenConfirmed();
+            var res = PaginationHelper.GetPagedData(data, page, pageSize);
+            RetunObject<PagedResult<Order>> test = new RetunObject<PagedResult<Order>>()
+            {
+                data = res,
+                mess = res.Data.Count() > 0 ? "đã lấy được dữ liệu" : "không có data",
+                statusCode = 200,
+            };
+            return Ok(test);
+        }
+        [HttpGet("OrderCanceledByCustomer"), Authorize(Roles = "admin")]
+        public async Task<IActionResult> OrderCanceledByCustomer(int page = 1, int pageSize = 10)
+        {
+            var data = await orderServicer.OrderCanceledByCustomer();
+            var res = PaginationHelper.GetPagedData(data, page, pageSize);
+            RetunObject<PagedResult<Order>> test = new RetunObject<PagedResult<Order>>()
+            {
+                data = res,
+                mess = res.Data.Count() > 0 ? "đã lấy được dữ liệu" : "không có data",
+                statusCode = 200,
+            };
+            return Ok(test);
+        }
         [HttpGet("getDetailForEmail/{id}"), Authorize(Roles = "client, admin")]
         public async Task<IActionResult> GetOrderEmail(int id,string? searchCode,[FromQuery] int page = 1,[FromQuery] int pageSize = 6)
         {

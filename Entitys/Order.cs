@@ -10,6 +10,10 @@ namespace FOLYFOOD.Entitys
         public int PaymentOrderPaymentId { get; set; }
         public int? UserId { get; set; }
         public int OrderStatusId { get; set; }
+        public int provinces { get; set; }
+        public int districts { get; set; }
+        public int wards { get; set; }
+        public int pickupTime { get; set; }
         public double originalPrice { get; set; }
         public double actualPrice { get; set; }
         public string FullName { get; set; }
