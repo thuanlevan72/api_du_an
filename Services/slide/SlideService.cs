@@ -89,7 +89,7 @@ namespace FOLYFOOD.Services.slide
                 slides.Add(new FOLYFOOD.Entitys.Slide()
                 {
                     CreatedAt = DateTime.Now,
-                    SlideImage = Slides.SlidesName,
+                    SlideImage = item.SlideImage,
                     SlidesId = Slides.SlidesId,
                     Title = item.Title,
                     SubTitle = item.SubTitle,

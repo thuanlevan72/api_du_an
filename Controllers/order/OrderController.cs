@@ -265,10 +265,10 @@ namespace FOLYFOOD.Controllers.order
             });
         }
         [HttpPost("cancelOrder/{code}"), Authorize(Roles = "client, admin")]
-        public async Task<IActionResult> cancelOrder(string code)
+        public async Task<IActionResult> cancelOrder(string code, [FromQuery] string message)
         {
             (string accountId, string role) = GetTokenInfo();
-            var res = await orderServicer.cancelOrder(code, accountId, role);
+            var res = await orderServicer.cancelOrder(code, accountId, role, message);
             if (res.errorOccurred)
             {
                 return NotFound(res);

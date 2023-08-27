@@ -14,6 +14,7 @@ namespace FOLYFOOD.Entitys
         public int districts { get; set; }
         public int wards { get; set; }
         public int pickupTime { get; set; }
+        public string ReasonForCancellation { get; set; }
         public double originalPrice { get; set; }
         public double actualPrice { get; set; }
         public string FullName { get; set; }

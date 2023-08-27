@@ -74,6 +74,7 @@ namespace FOLYFOOD.Services.order
                 ImageComplete = "",
                 provinces = order.provinces,
                 districts = order.districts,
+                ReasonForCancellation = "",
                 wards = order.wards,
                 pickupTime = order.pickupTime,
                 noteOrder = !string.IsNullOrEmpty(order.noteOrder) ? order.noteOrder : "",
@@ -294,7 +295,7 @@ namespace FOLYFOOD.Services.order
             return resOrder;
         }
 
-        public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role) {
+        public async Task<RetunObject<Order>> cancelOrder(string code, string accountId, string role,string message) {
             var dataOne = DBContext.Orders.FirstOrDefault(x => x.CodeOrder == code);
          
           
@@ -324,6 +325,10 @@ namespace FOLYFOOD.Services.order
                 {
                     throw new Exception("Đơn hàng của quý khách đã quá hạn để hủy.");
                 }
+                if(string.IsNullOrEmpty(message))
+                {
+                    throw new Exception("Không tồn tại lý do để hủy.");
+                }
                 if (dataOne.OrderStatusId !=4)
                 {
                     throw new Exception("Đơn hàng của đã được sử lý rồi không được hủy.");
@@ -339,6 +344,7 @@ namespace FOLYFOOD.Services.order
                 };
             }
             dataOne.OrderStatusId = 12;
+            dataOne.ReasonForCancellation = message;
             DBContext.Orders.Update(dataOne);
             DBContext.SaveChanges();
             if (ValidateValue.IsValidEmail(dataOne.Email))
