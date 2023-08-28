@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging;
+using CloudinaryDotNet.Actions;
 using FOLYFOOD.Dto;
 using FOLYFOOD.Entitys;
 using FOLYFOOD.Hellers;
@@ -6,6 +7,7 @@ using FOLYFOOD.Hellers.imageChecks;
 using FOLYFOOD.Hellers.Mail;
 using FOLYFOOD.Hellers.validate;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace FOLYFOOD.Services
@@ -193,6 +195,22 @@ namespace FOLYFOOD.Services
             return null;
             
 
+        }
+        public Account CheckUserExists(int AccountId, string accountId)
+        {
+            var acc = DBContext.Accounts.Include(x => x.Decentralization).Include(x => x.User).FirstOrDefault(x => x.AccountId == AccountId);
+            if (acc == null)
+            {
+                return null;
+            }
+
+            if (int.Parse(accountId) != acc.AccountId)
+            {
+                    return null;
+            }
+            
+            return acc;
+            
         }
     }
 }

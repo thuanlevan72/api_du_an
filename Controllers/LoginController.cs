@@ -27,10 +27,13 @@ namespace POLYFOOD.Controllers
         private readonly Context contextDb;
         private readonly Random rnd;
         private readonly UserService userService;
-        private (string, string) GetTokenInfo()
+        private (string, string) GetTokenInfo(string token = "")
         {
             // Lấy token từ HttpContext
-            string token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if(token == "")
+            {
+                token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            }
 
             // Giải mã JWT và lấy thông tin accountId từ payload
             var handler = new JwtSecurityTokenHandler();
@@ -154,6 +157,18 @@ namespace POLYFOOD.Controllers
                 // if username/password are not valid send unauthorized status code in response               
                 return BadRequest("Username or Password Invalid!");
             }
+        }
+        [HttpPost("refresh-token")]
+        public string RefreshToken(RefreshTokenRequest value)
+        {
+            (string accountId, string role) = GetTokenInfo(value.Token);
+            var account = SecurityUser.CheckUserExists(value.UserId, accountId);
+            if (account == null)
+            {
+                return "RefreshToken thất bại";
+            }
+            string token = CreateToken(account.UserName, account.AccountId, account.Decentralization.AuthorityName.ToLower());
+            return token;
         }
 
         private string CreateToken(string username,int accountId, string role)
