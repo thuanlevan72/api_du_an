@@ -155,7 +155,7 @@ namespace FOLYFOOD.Services.cart
             IQueryable<CartItem> cartItem = DBContext.CartItems.Where(x=>x.CartsId == carts.CartsId).AsNoTracking();
 
             DBContext.CartItems.RemoveRange(cartItem);
-            DBContext.SaveChanges(true);
+            DBContext.SaveChanges();
             return "xóa tất cả thành công";
         }
     }

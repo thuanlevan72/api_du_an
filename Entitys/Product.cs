@@ -11,6 +11,8 @@ namespace FOLYFOOD.Entitys
         public double Price { get; set; }
         public string AvartarImageProduct { get; set; }
         public string Title { get; set; }
+        [NotMapped] // Đánh dấu trường này để không ánh xạ vào cơ sở dữ liệu
+        public int QuantityOrder { get; set; }
         public int number_of_views { get; set; }
         public int Quantity { get; set; }
         public int Discount { get; set; }

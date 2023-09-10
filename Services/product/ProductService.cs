@@ -198,13 +198,37 @@ namespace FOLYFOOD.Services.product
             {
                 data = data.Where(x => x.ProductTypeId == ProductTypeId.Value);
             }
+
+            // Lấy dữ liệu về số lượng sản phẩm đã được đặt hàng
+            var productQuantities = await DBContext.OrderDetails
+                .Where(od => !DBContext.Orders.Any(o => o.OrderStatusId != 5 && o.OrderId == od.OrderId))
+                .GroupBy(od => od.ProductId)
+                .Select(grouped => new
+                {
+                    ProductId = grouped.Key,
+                    Quantity = grouped.Sum(od => od.Quantity)
+                })
+                .ToListAsync();
+
+            // Gán giá trị QuantityOrder cho từng sản phẩm trong data
             foreach (var product in data)
             {
+                var quantityOrder = productQuantities.FirstOrDefault(pq => pq.ProductId == product.ProductId);
+                if (quantityOrder != null)
+                {
+                    product.QuantityOrder = quantityOrder.Quantity;
+                }
+                else
+                {
+                    product.QuantityOrder = 0;
+                }
+
                 product.ProductType.Products = null;
             }
 
-            return data.OrderByDescending(x=>x.Status).ThenByDescending(x => x.number_of_views).ThenByDescending(x => x.ProductId);
+            return data.OrderByDescending(x => x.Status).ThenByDescending(x => x.number_of_views).ThenByDescending(x => x.ProductId);
         }
+
 
         public async Task<RetunObject<Product>> updateProduct(int productId, ProductDto product)
         {
